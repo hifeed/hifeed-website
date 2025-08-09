@@ -11,6 +11,8 @@ const Hero: React.FC = () => {
             section.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
+    const rawTitle = (t('title') as string) || '';
+    const [pre, post] = rawTitle.split('{highlight}');
     return (
         <section className="min-h-screen flex items-center pt-16 bg-cover bg-center relative" style={{ backgroundImage: 'url(/hifeed-cettle.jpg)' }}>
             <div className="w-full h-full bg-black/40 absolute inset-0" aria-hidden></div>
@@ -21,9 +23,9 @@ const Hero: React.FC = () => {
                             🌱 {t('badge') as string}
                         </div>
                         <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-                            {(t('title') as string).replace('{highlight}', '')}
+                            {pre}
                             <span className="text-hifeed-green">{t('highlight') as string}</span>
-                            {(t('title') as string).includes('{highlight}') ? '' : ''}
+                            {post}
                         </h1>
                         <h2 className="text-2xl lg:text-3xl mb-6 font-light">{t('subtitle') as string}</h2>
                         <p className="text-lg mb-8 leading-relaxed max-w-xl">{t('description') as string}</p>
