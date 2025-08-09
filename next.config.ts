@@ -14,11 +14,6 @@ const nextConfig: NextConfig = {
     ],
   },
   
-  // Experimental features
-  experimental: {
-    optimizeCss: true,
-  },
-  
   // Compression
   compress: true,
   
