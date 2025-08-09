@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HiFeed Website
 
-## Getting Started
+Website resmi HiFeed - Platform inovatif untuk solusi terdepan.
 
-First, run the development server:
+## 🚀 Tech Stack
+
+- **Framework**: Next.js 15.4.5
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Deployment**: Vercel
+
+## 📦 Installation
 
 ```bash
+# Clone repository
+git clone [repository-url]
+
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Available Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev` - Start development server
+- `npm run build` - Build production version
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 Deployment
 
-## Learn More
+Project ini sudah dikonfigurasi untuk deployment di Vercel. Langkah deployment:
 
-To learn more about Next.js, take a look at the following resources:
+1. Push code ke repository
+2. Connect repository di Vercel dashboard
+3. Deploy otomatis akan berjalan
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📁 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/           # App router pages
+├── components/    # Reusable components
+public/           # Static assets
+components/       # Additional components
+```
 
-## Deploy on Vercel
+## 🔧 Environment Variables
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Buat file `.env.local` untuk environment variables jika diperlukan:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```env
+# Add your environment variables here
+```
+
+## 📱 Features
+
+- Responsive design
+- TypeScript support
+- Tailwind CSS styling
+- SEO optimized
+- Fast loading
+
+## 🤝 Contributing
+
+1. Fork repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
+
+---
+
+This project is bootstrapped with [Next.js](https://nextjs.org) and ready for deployment on [Vercel Platform](https://vercel.com).
