@@ -30,8 +30,13 @@ const Stories: React.FC = () => {
                             </div>
                         </div>
                         <div className="bg-hifeed-light p-8 lg:p-12 flex items-center justify-center slide-in-right">
-                            <div className="relative">
-                                {/* SVG and illustration code here, omitted for brevity */}
+                            <div className="relative w-full flex items-center justify-center">
+                                <img
+                                    src="/arif-testimonial.png"
+                                    alt="Arif Irawan Testimonial"
+                                    className="rounded-2xl shadow-lg object-cover"
+                                    style={{ width: '80%', height: 'auto', maxWidth: '800px', minWidth: '300px' }}
+                                />
                             </div>
                         </div>
                     </div>

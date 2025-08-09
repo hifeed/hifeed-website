@@ -22,13 +22,18 @@ function get(obj: unknown, path: string): unknown {
 }
 
 export const LocaleProvider: React.FC<{ initialLocale: Locale; children: React.ReactNode }> = ({ initialLocale, children }) => {
-  const [locale, setLocale] = useState<Locale>(() => {
+  const [locale, setLocale] = useState<Locale>(initialLocale);
+
+  // On client, sync locale from localStorage if available
+  React.useEffect(() => {
     if (typeof window !== 'undefined') {
       const saved = window.localStorage.getItem('locale') as Locale | null;
-      if (saved === 'en' || saved === 'id') return saved;
+      if (saved === 'en' || saved === 'id' && saved !== locale) {
+        setLocale(saved);
+      }
+      document.documentElement.lang = locale;
     }
-    return initialLocale;
-  });
+  }, [locale]);
 
   const value = useMemo(() => {
     const dict: Dictionary = dictionaries[locale];
@@ -37,10 +42,10 @@ export const LocaleProvider: React.FC<{ initialLocale: Locale; children: React.R
       t: (path: string) => get(dict, path),
       setLocale: (l: Locale) => {
         setLocale(l);
-        if (typeof window !== 'undefined') window.localStorage.setItem('locale', l);
-        try {
-          if (typeof document !== 'undefined') document.documentElement.lang = l;
-        } catch {}
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem('locale', l);
+          document.documentElement.lang = l;
+        }
       },
     } as LocaleContextType;
   }, [locale]);

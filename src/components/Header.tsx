@@ -28,8 +28,8 @@ const Header: React.FC = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center space-x-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-                        <div className="w-10 h-10 bg-hifeed-green rounded-xl flex items-center justify-center bounce-gentle">
-                            <span className="text-white font-bold text-lg">H</span>
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bounce-gentle overflow-hidden">
+                            <img src="/hifeed_logo.png" alt="HiFeed Logo" className="w-full h-full object-contain" />
                         </div>
                         <div className="text-2xl font-bold text-hifeed-green">HiFeed</div>
                     </div>

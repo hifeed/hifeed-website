@@ -39,8 +39,13 @@ const Hero: React.FC = () => {
                         </div>
                     </div>
                     <div className="relative slide-in-right hidden lg:block">
-                        <div className="bg-white/70 backdrop-blur rounded-3xl p-4 sm:p-8 shadow-xl">
-                            <Image src="/hifeed-cettle.jpg" alt="HiFeed Cattle" width={800} height={600} className="rounded-2xl" />
+                        <div className="bg-white/70 backdrop-blur rounded-3xl p-4 sm:p-8 shadow-xl flex items-center justify-center">
+                            <video
+                                src="/HiFeed_intro.mov"
+                                controls
+                                className="rounded-2xl object-cover"
+                                style={{ width: '100%', maxWidth: '600px', height: 'auto' }}
+                            />
                         </div>
                     </div>
                 </div>

@@ -9,8 +9,8 @@ const Footer: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-2">
                         <div className="flex items-center space-x-3 mb-6">
-                            <div className="w-12 h-12 bg-hifeed-green rounded-xl flex items-center justify-center bounce-gentle">
-                                <span className="text-white font-bold text-lg">H</span>
+                            <div className="w-12 h-12 rounded-xl flex items-center justify-center bounce-gentle overflow-hidden">
+                                <img src="/hifeed_logo.png" alt="HiFeed Logo" className="w-full h-full object-contain" />
                             </div>
                             <div className="text-3xl font-bold text-hifeed-green">HiFeed</div>
                         </div>

@@ -19,8 +19,13 @@ const Palatability: React.FC = () => {
           <div className="rounded-2xl overflow-hidden shadow-lg">
             <Image src="/cettle-feed-pellets.jpg" alt="HiFeed Pellets" width={1200} height={800} className="w-full h-auto object-cover" />
           </div>
-          <div className="rounded-2xl overflow-hidden shadow-lg">
-            <video src="/cettle-feed-video.mp4" controls className="w-full h-full object-cover rounded-2xl" />
+          <div className="rounded-2xl overflow-hidden shadow-lg flex items-center justify-center" style={{ minHeight: '300px' }}>
+            <video
+              src="/cettle-feed-video.mp4"
+              controls
+              className="rounded-2xl object-cover"
+              style={{ width: '80%', maxWidth: '480px', height: 'auto', minWidth: '240px' }}
+            />
           </div>
         </div>
       </div>
