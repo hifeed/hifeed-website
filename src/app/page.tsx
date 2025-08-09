@@ -8,7 +8,7 @@ import Solution from "../components/Solution";
 import Benefits from "../components/Benefits";
 import Impact from "../components/Impact";
 import Stories from "../components/Stories";
-import Team from "../components/Team";
+import Palatability from "../components/Palatability";
 import Consultation from "../components/Consultation";
 import Footer from "../components/Footer";
 
@@ -44,9 +44,9 @@ export default function Home() {
         <Challenges />
         <Solution />
         <Benefits />
+        <Palatability />
         <Impact />
         <Stories />
-        <Team />
         <Consultation />
       </main>
       <Footer />

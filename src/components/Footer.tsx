@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTranslations } from "../i18n/LocaleProvider";
 
 const Footer: React.FC = () => {
+    const t = useTranslations('footer');
     return (
         <footer className="bg-hifeed-gray text-gray-600 py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,8 +14,13 @@ const Footer: React.FC = () => {
                             </div>
                             <div className="text-3xl font-bold text-hifeed-green">HiFeed</div>
                         </div>
-                        <p className="text-gray-600 leading-relaxed mb-6">Pioneering the future of sustainable cattle farming through revolutionary feed technology. Transforming agriculture for a net-zero world.</p>
-                        <p className="text-sm text-gray-500 bg-hifeed-light inline-block px-3 py-1 rounded-full">Powered by Wavemaker Impact</p>
+                        <p className="text-gray-600 leading-relaxed mb-6">{t('about') as string}</p>
+                        <div className="space-y-1 text-sm">
+                          <div className="font-semibold">{t('addressTitle') as string}</div>
+                          <div>{t('company') as string}</div>
+                          <div>{t('address') as string}</div>
+                          <div><a href="mailto:hello@hifeed.co" className="hover:text-hifeed-green">{t('email') as string}</a></div>
+                        </div>
                     </div>
                     <div>
                         <h4 className="text-lg font-bold mb-6 text-hifeed-green">Solutions</h4>
@@ -21,7 +28,6 @@ const Footer: React.FC = () => {
                             <li><a href="#solution" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Feed Technology</a></li>
                             <li><a href="#benefits" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Cost Reduction</a></li>
                             <li><a href="#impact" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Carbon Impact</a></li>
-                            <li><a href="#team" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Our Expertise</a></li>
                             <li><a href="#stories" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Success Stories</a></li>
                         </ul>
                     </div>
@@ -30,14 +36,13 @@ const Footer: React.FC = () => {
                         <ul className="space-y-3">
                             <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Privacy Policy</a></li>
                             <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Terms of Service</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Contact Support</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">FAQ</a></li>
+                            <li><a href="#consultation" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Contact</a></li>
                         </ul>
                     </div>
                 </div>
                 <div className="border-t border-gray-200 mt-12 pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center">
-                        <p className="text-gray-500 text-center md:text-left">&copy; 2024 HiFeed. All rights reserved.</p>
+                        <p className="text-gray-500 text-center md:text-left">&copy; {new Date().getFullYear()} HiFeed. {t('copyright') as string}</p>
                         <div className="flex space-x-4 mt-4 md:mt-0">
                             <a href="#" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover">
                                <span className="text-sm font-bold text-hifeed-green">in</span>
