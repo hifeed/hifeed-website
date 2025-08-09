@@ -5,7 +5,8 @@ import { useTranslations } from "../i18n/LocaleProvider";
 const Consultation: React.FC = () => {
     const t = useTranslations('consultation');
     const [formData, setFormData] = useState({
-        contact: '',
+        name: '',
+        whatsapp: '',
         farmName: '',
         location: '',
         herdSize: '',
@@ -22,7 +23,7 @@ const Consultation: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!formData.contact || !formData.farmName || !formData.location || !formData.herdSize) {
+        if (!formData.name || !formData.whatsapp || !formData.farmName || !formData.location) {
             setShake(true);
             setTimeout(() => setShake(false), 500);
             alert(t('requiredAlert') as string);
@@ -30,7 +31,7 @@ const Consultation: React.FC = () => {
         }
         setIsSubmitting(true);
         const phone = '6285960511645'; // Indonesian format without +
-        const msg = `Halo HiFeed,%0A%0ASaya ingin konsultasi.%0A%0AKontak: ${encodeURIComponent(formData.contact)}%0ANama Peternakan: ${encodeURIComponent(formData.farmName)}%0ALokasi: ${encodeURIComponent(formData.location)}%0APopulasi Ternak: ${encodeURIComponent(formData.herdSize)}%0APakan Digunakan: ${encodeURIComponent(formData.feedType)}%0AKonsumsi Pakan/Hari/Sapi (kg): ${encodeURIComponent(formData.dailyFeed)}`;
+        const msg = `Halo HiFeed,%0A%0ASaya ingin konsultasi.%0A%0ANama: ${encodeURIComponent(formData.name)}%0ANomor WA: ${encodeURIComponent(formData.whatsapp)}%0ANama Peternakan: ${encodeURIComponent(formData.farmName)}%0ALokasi: ${encodeURIComponent(formData.location)}%0A${formData.herdSize ? `Populasi Ternak: ${encodeURIComponent(formData.herdSize)}%0A` : ''}${formData.feedType ? `Pakan Digunakan: ${encodeURIComponent(formData.feedType)}%0A` : ''}${formData.dailyFeed ? `Konsumsi Pakan/Hari/Sapi (kg): ${encodeURIComponent(formData.dailyFeed)}` : ''}`;
         const url = `https://wa.me/${phone}?text=${msg}`;
         window.location.href = url;
         setTimeout(() => setIsSubmitting(false), 1000);
@@ -42,7 +43,8 @@ const Consultation: React.FC = () => {
                 <div className="bg-hifeed-light rounded-2xl p-8 shadow-xl fade-in-up">
                     <h2 className="text-3xl font-bold mb-6 text-hifeed-green">{t('title') as string}</h2>
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        <input type="text" name="contact" value={formData.contact} onChange={handleInputChange} placeholder={t('contact') as string} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-hifeed-green" />
+                        <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder={t('name') as string || 'Nama*'} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-hifeed-green" />
+                        <input type="text" name="whatsapp" value={formData.whatsapp} onChange={handleInputChange} placeholder={t('whatsapp') as string || 'Nomor WA*'} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-hifeed-green" />
                         <input type="text" name="farmName" value={formData.farmName} onChange={handleInputChange} placeholder={t('farmName') as string} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-hifeed-green" />
                         <input type="text" name="location" value={formData.location} onChange={handleInputChange} placeholder={t('location') as string} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-hifeed-green" />
                         <input type="number" name="herdSize" value={formData.herdSize} onChange={handleInputChange} placeholder={t('herdSize') as string} className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:border-hifeed-green" />
