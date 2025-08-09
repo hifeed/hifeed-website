@@ -23,20 +23,20 @@ const Footer: React.FC = () => {
                         </div>
                     </div>
                     <div>
-                        <h4 className="text-lg font-bold mb-6 text-hifeed-green">Solutions</h4>
+                        <h4 className="text-lg font-bold mb-6 text-hifeed-green">{t('solutionsMenu') as string}</h4>
                         <ul className="space-y-3">
-                            <li><a href="#solution" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Feed Technology</a></li>
-                            <li><a href="#benefits" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Cost Reduction</a></li>
-                            <li><a href="#impact" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Carbon Impact</a></li>
-                            <li><a href="#stories" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Success Stories</a></li>
+                            <li><a href="#solution" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('feedTech') as string}</a></li>
+                            <li><a href="#benefits" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('costReduction') as string}</a></li>
+                            <li><a href="#impact" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('carbonImpact') as string}</a></li>
+                            <li><a href="#stories" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('successStories') as string}</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h4 className="text-lg font-bold mb-6 text-hifeed-green">Support</h4>
+                        <h4 className="text-lg font-bold mb-6 text-hifeed-green">{t('supportMenu') as string}</h4>
                         <ul className="space-y-3">
-                            <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Privacy Policy</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Terms of Service</a></li>
-                            <li><a href="#consultation" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">Contact</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('privacyPolicy') as string}</a></li>
+                            <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('termsOfService') as string}</a></li>
+                            <li><a href="#consultation" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('contact') as string}</a></li>
                         </ul>
                     </div>
                 </div>

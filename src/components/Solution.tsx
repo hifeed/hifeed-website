@@ -1,37 +1,39 @@
 import React from 'react';
+import { useTranslations } from "../i18n/LocaleProvider";
 
 const Solution: React.FC = () => {
+    const t = useTranslations('solution');
     return (
         <section id="solution" className="py-20 bg-hifeed-light">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16 fade-in-up">
                     <div className="bg-hifeed-green/10 inline-block px-4 py-2 rounded-full text-hifeed-green font-semibold mb-6 pulse-scale">
-                        🚀 Revolutionary Solution
+                        🚀 {t('badge') as string}
                     </div>
-                    <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gray-900">The <span className="text-hifeed-green">HiFeed</span> Revolution</h2>
+                    <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-gray-900">{t('titleA') as string} <span className="text-hifeed-green">{t('titleB') as string}</span></h2>
                 </div>
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6 slide-in-left">
                         <div className="bg-white rounded-2xl p-6 shadow-lg scale-hover">
                             <div className="flex items-center mb-4">
                                 <div className="bg-hifeed-green rounded-full w-10 h-10 flex items-center justify-center text-white font-bold mr-4 bounce-gentle">1</div>
-                                <h3 className="text-2xl font-bold text-hifeed-green">Carbon-Negative Innovation</h3>
+                                <h3 className="text-2xl font-bold text-hifeed-green">{t('card1Title') as string}</h3>
                             </div>
-                            <p className="text-gray-600 leading-relaxed">Revolutionary complete feed pellets engineered to reduce enteric fermentation by 50% while actively capturing carbon through our cultivation process.</p>
+                            <p className="text-gray-600 leading-relaxed">{t('card1Desc') as string}</p>
                         </div>
                         <div className="bg-white rounded-2xl p-6 shadow-lg scale-hover">
                             <div className="flex items-center mb-4">
                                 <div className="bg-hifeed-accent rounded-full w-10 h-10 flex items-center justify-center text-white font-bold mr-4 bounce-gentle" style={{ animationDelay: '0.5s' }}>2</div>
-                                <h3 className="text-2xl font-bold text-hifeed-green">Smart Nutrition Technology</h3>
+                                <h3 className="text-2xl font-bold text-hifeed-green">{t('card2Title') as string}</h3>
                             </div>
-                            <p className="text-gray-600 leading-relaxed">AI-optimized nutrient profiles delivering superior palatability and health outcomes while enabling traceable net-zero cattle production.</p>
+                            <p className="text-gray-600 leading-relaxed">{t('card2Desc') as string}</p>
                         </div>
                         <div className="bg-white rounded-2xl p-6 shadow-lg scale-hover">
                             <div className="flex items-center mb-4">
                                 <div className="bg-blue-500 rounded-full w-10 h-10 flex items-center justify-center text-white font-bold mr-4 bounce-gentle" style={{ animationDelay: '1s' }}>3</div>
-                                <h3 className="text-2xl font-bold text-hifeed-green">Seamless Integration</h3>
+                                <h3 className="text-2xl font-bold text-hifeed-green">{t('card3Title') as string}</h3>
                             </div>
-                            <p className="text-gray-600 leading-relaxed">Plug-and-play solution that transforms your existing operation into a sustainable, profitable, and future-ready farming enterprise.</p>
+                            <p className="text-gray-600 leading-relaxed">{t('card3Desc') as string}</p>
                         </div>
                     </div>
                     <div className="relative slide-in-right">
@@ -59,14 +61,14 @@ const Solution: React.FC = () => {
                                     </marker>
                                 </defs>
                                 <g fill="#00AB7E" fontSize="11" fontWeight="bold">
-                                    <text x="20" y="95">Carbon Insetting</text>
-                                    <text x="20" y="170">Smart Cultivation</text>
-                                    <text x="20" y="245">Nutrient Optimization</text>
+                                    <text x="20" y="95">{t('svgLabel1') as string}</text>
+                                    <text x="20" y="170">{t('svgLabel2') as string}</text>
+                                    <text x="20" y="245">{t('svgLabel3') as string}</text>
                                 </g>
                                 <g fill="#FF6B35" fontSize="11" fontWeight="bold">
-                                    <text x="280" y="95" textAnchor="end">50% Less Emissions</text>
-                                    <text x="350" y="170" textAnchor="end">30% Cost Reduction</text>
-                                    <text x="350" y="245" textAnchor="end">Net-Zero Cattle</text>
+                                    <text x="280" y="95" textAnchor="end">{t('svgLabel4') as string}</text>
+                                    <text x="350" y="170" textAnchor="end">{t('svgLabel5') as string}</text>
+                                    <text x="350" y="245" textAnchor="end">{t('svgLabel6') as string}</text>
                                 </g>
                                 <g fill="#00AB7E" opacity="0.6" className="bounce-gentle">
                                     <circle cx="100" cy="120" r="3" /><circle cx="120" cy="140" r="3" />
