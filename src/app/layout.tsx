@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   title: "HiFeed - Sustainable Cattle Farming Revolution",
   description:
     "Transform your cattle operation with HiFeed's revolutionary complete feed pellets. Reduce emissions by 50%, cut costs by 30%, and lead the sustainable farming revolution.",
+  // Set browser UI theme color (tab/address bar) to brand green
+  themeColor: "#00AB7E",
 };
 
 export default async function RootLayout({
