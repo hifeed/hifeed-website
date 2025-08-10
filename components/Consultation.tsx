@@ -70,7 +70,7 @@ const Consultation: React.FC = () => {
                                 </div>
                                 <div>
                                     <label className="block text-sm font-bold text-white/90 mb-2">Email Address *</label>
-                                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="your.email@example.com" className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition-all" />
+                                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder="your.email@hifeed.co" className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:ring-2 focus:ring-yellow-300 focus:border-transparent transition-all" />
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

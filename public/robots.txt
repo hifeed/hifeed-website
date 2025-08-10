@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://hifeed.co/sitemap.xml
+Host: https://hifeed.co
