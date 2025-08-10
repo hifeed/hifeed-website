@@ -39,7 +39,8 @@ export interface PalatabilityDict {
 
 export interface ConsultationDict {
   title: string;
-  contact: string;
+  name: string;
+  whatsapp: string;
   farmName: string;
   location: string;
   herdSize: string;
