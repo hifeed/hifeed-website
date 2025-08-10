@@ -11,7 +11,7 @@ const BenefitCard: React.FC<{ emoji: string; title: string; description: string;
         <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
         <p className="text-gray-600 leading-relaxed">{description}</p>
     </div>
-); 
+);
 
 const Benefits: React.FC = () => {
     const t = useTranslations('benefits');
