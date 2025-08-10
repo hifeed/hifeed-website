@@ -7,75 +7,87 @@ import Script from "next/script";
 // Prefer domain from env for canonical/OG URLs
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://hifeed.co";
 
-export const metadata: Metadata = {
-  title: "HiFeed - Sustainable Cattle Farming Revolution",
-  description:
-    "Transform your cattle operation with HiFeed's revolutionary complete feed pellets. Reduce emissions by 50%, cut costs by 30%, and lead the sustainable farming revolution.",
-  // Set browser UI theme color (tab/address bar) to brand green
-  themeColor: "#00AB7E",
-  metadataBase: new URL(siteUrl),
-  applicationName: "HiFeed",
-  keywords: [
-    "HiFeed",
-    "cattle feed",
-    "complete feed pellets",
-    "sustainable farming",
-    "carbon negative feed",
-    "net-zero agriculture",
-    "pakan sapi",
-    "peternakan berkelanjutan",
-  ],
-  alternates: {
-    canonical: "/",
-  },
-  icons: {
-    icon: "/favicon.ico",
-  },
-  openGraph: {
-    type: "website",
-    url: "/",
-    siteName: "HiFeed",
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const saved = cookieStore.get("locale")?.value as "en" | "id" | undefined;
+  const h = await headers();
+  const country = (h.get("x-vercel-ip-country") || h.get("x-country") || "").toUpperCase();
+  const initialLocale: "en" | "id" = saved ?? (country === "ID" ? "id" : "en");
+
+  const enDesc =
+    "Transform your cattle operation with HiFeed's revolutionary complete feed pellets. Reduce emissions by 50%, cut costs by 30%, and lead the sustainable farming revolution.";
+  const idDesc =
+    "HiFeed adalah pelopor solusi peternakan sapi berkelanjutan, memungkinkan peternak meningkatkan performa pakan sekaligus mengurangi emisi karbon.";
+  const description = initialLocale === "id" ? idDesc : enDesc;
+  const ogLocale = initialLocale === "id" ? "id_ID" : "en_US";
+
+  return {
     title: "HiFeed - Sustainable Cattle Farming Revolution",
-    description:
-      "Transform your cattle operation with HiFeed's revolutionary complete feed pellets. Reduce emissions by 50%, cut costs by 30%, and lead the sustainable farming revolution.",
-    images: [
-      {
-        url: "/hifeed-cettle.jpg",
-        width: 1200,
-        height: 630,
-        alt: "HiFeed - Sustainable Cattle Farming",
-      },
+    description,
+    themeColor: "#00AB7E",
+    metadataBase: new URL(siteUrl),
+    applicationName: "HiFeed",
+    keywords: [
+      "HiFeed",
+      "cattle feed",
+      "complete feed pellets",
+      "sustainable farming",
+      "carbon negative feed",
+      "net-zero agriculture",
+      "pakan sapi",
+      "peternakan berkelanjutan",
     ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    site: "@hifeed", // update if you have a real handle
-    title: "HiFeed - Sustainable Cattle Farming Revolution",
-    description:
-      "Transform your cattle operation with HiFeed's revolutionary complete feed pellets. Reduce emissions by 50%, cut costs by 30%, and lead the sustainable farming revolution.",
-    images: [
-      {
-        url: "/hifeed-cettle.jpg",
-        alt: "HiFeed - Sustainable Cattle Farming",
-      },
-    ],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
+    alternates: {
+      canonical: "/",
+    },
+    icons: {
+      icon: "/favicon.ico",
+    },
+    openGraph: {
+      type: "website",
+      url: "/",
+      siteName: "HiFeed",
+      title: "HiFeed - Sustainable Cattle Farming Revolution",
+      description,
+      locale: ogLocale,
+      images: [
+        {
+          url: "/hifeed-cettle.jpg",
+          width: 1200,
+          height: 630,
+          alt: "HiFeed - Sustainable Cattle Farming",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@hifeed",
+      title: "HiFeed - Sustainable Cattle Farming Revolution",
+      description,
+      images: [
+        {
+          url: "/hifeed-cettle.jpg",
+          alt: "HiFeed - Sustainable Cattle Farming",
+        },
+      ],
+    },
+    robots: {
       index: true,
       follow: true,
-      'max-snippet': -1,
-      'max-image-preview': 'large',
-      'max-video-preview': -1,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-snippet': -1,
+        'max-image-preview': 'large',
+        'max-video-preview': -1,
+      },
     },
-  },
-  manifest: "/manifest.webmanifest",
-  verification: {
-    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
-  },
-};
+    manifest: "/manifest.webmanifest",
+    verification: {
+      google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
