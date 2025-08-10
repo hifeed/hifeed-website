@@ -24,16 +24,32 @@ function get(obj: unknown, path: string): unknown {
 export const LocaleProvider: React.FC<{ initialLocale: Locale; children: React.ReactNode }> = ({ initialLocale, children }) => {
   const [locale, setLocale] = useState<Locale>(initialLocale);
 
-  // On client, sync locale from localStorage if available
+  // Pada mount: gunakan preferensi yang tersimpan, jika tidak ada deteksi IP -> set default.
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const saved = window.localStorage.getItem('locale') as Locale | null;
-      if (saved === 'en' || saved === 'id' && saved !== locale) {
-        setLocale(saved);
-      }
-      document.documentElement.lang = locale;
+    if (typeof window === 'undefined') return;
+    const saved = window.localStorage.getItem('locale') as Locale | null;
+    if (saved === 'en' || saved === 'id') {
+      if (saved !== locale) setLocale(saved);
+      document.documentElement.lang = saved;
+      document.cookie = `locale=${saved}; path=/; max-age=31536000`;
+      return;
     }
-  }, [locale]);
+    (async () => {
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        const isID = data && data.country === 'ID';
+        const detected: Locale = isID ? 'id' : 'en';
+        window.localStorage.setItem('locale', detected);
+        document.cookie = `locale=${detected}; path=/; max-age=31536000`;
+        setLocale(detected);
+        document.documentElement.lang = detected;
+      } catch {
+        document.documentElement.lang = locale;
+      }
+    })();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const value = useMemo(() => {
     const dict: Dictionary = dictionaries[locale];
@@ -45,6 +61,7 @@ export const LocaleProvider: React.FC<{ initialLocale: Locale; children: React.R
         if (typeof window !== 'undefined') {
           window.localStorage.setItem('locale', l);
           document.documentElement.lang = l;
+          document.cookie = `locale=${l}; path=/; max-age=31536000`;
         }
       },
     } as LocaleContextType;

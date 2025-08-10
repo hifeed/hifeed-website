@@ -19,13 +19,16 @@ const Palatability: React.FC = () => {
           <div className="rounded-2xl overflow-hidden shadow-lg">
             <Image src="/cettle-feed-pellets.jpg" alt="HiFeed Pellets" width={1200} height={800} className="w-full h-auto object-cover" />
           </div>
-          <div className="rounded-2xl overflow-hidden shadow-lg flex items-center justify-center" style={{ minHeight: '300px' }}>
-            <video
-              src="/cettle-feed-video.mp4"
-              controls
-              className="rounded-2xl object-cover"
-              style={{ width: '80%', maxWidth: '480px', height: 'auto', minWidth: '240px' }}
-            />
+          <div className="rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
+            {/* Embed Google Drive dengan rasio 16:9 agar tidak gepeng */}
+            <div style={{ width: '100%', maxWidth: '700px', aspectRatio: '16/9', background: '#000', borderRadius: '1rem', overflow: 'hidden' }}>
+              <iframe
+                src="https://drive.google.com/file/d/1xTamyiCaRIt4kcBqMCc24GgtJQfx4MFO/preview"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+                style={{ width: '100%', height: '100%', border: 0 }}
+              />
+            </div>
           </div>
         </div>
       </div>
