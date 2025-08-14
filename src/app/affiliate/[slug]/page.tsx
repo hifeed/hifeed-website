@@ -11,8 +11,12 @@ const affiliateMap: Record<string, string> = {
 
 export const runtime = 'nodejs'; // boleh dihapus jika tidak diperlukan
 
-export default function AffiliateRedirect({ params }: { params: { slug: string } }) {
-  const target = affiliateMap[params.slug];
+// Accept unknown props and assert the shape only where needed to avoid TypeScript/PageProps conflicts and ESLint `no-explicit-any`.
+export default function AffiliateRedirect(props: unknown) {
+  const params = (props as { params?: { slug?: string } })?.params;
+  const slug = params?.slug;
+
+  const target = slug ? affiliateMap[slug] : undefined;
   if (target) {
     redirect(target);
   }
