@@ -14,12 +14,29 @@ const Stories: React.FC = () => {
                     <p className="text-lg text-gray-600 max-w-2xl mx-auto">{t('subtitle') as string}</p>
                 </div>
                 <div className="bg-white rounded-2xl overflow-hidden shadow-xl scale-hover">
-                    <div className="grid grid-cols-1 lg:grid-cols-2">
+                    <div className="flex flex-col">
+                        <div className="bg-hifeed-light p-4 flex items-center justify-center w-full">
+                            <div className="grid grid-cols-4 gap-4 w-full max-w-5xl">
+                                {[1,2,3,4].map(i => (
+                                    <div key={i} className="rounded-2xl shadow-lg bg-white flex items-center justify-center aspect-[9/16] overflow-hidden">
+                                        <img
+                                            src={`/stories_${i}.webp`}
+                                            alt={`Story ${i}`}
+                                            className="w-full h-full object-cover"
+                                            style={{ aspectRatio: '9/16' }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                         <div className="p-8 lg:p-12 slide-in-left">
                             <div className="text-hifeed-accent text-6xl mb-6 leading-none opacity-50">&ldquo;</div>
                             <p className="text-xl text-gray-700 mb-6 italic leading-relaxed">{t('quote') as string}</p>
                             <div className="flex items-center space-x-4">
-                                <div className="bg-hifeed-green rounded-2xl w-16 h-16 flex items-center justify-center text-white font-bold text-xl bounce-gentle">AI</div>
+                                {/* Avatar changed to cowboy emoji */}
+                                <div className="bg-hifeed-green rounded-2xl w-16 h-16 flex items-center justify-center text-white text-3xl bounce-gentle">
+                                    <span role="img" aria-label="cowboy">🤠</span>
+                                </div>
                                 <div>
                                     <h4 className="text-2xl font-bold text-gray-900 mb-1">{t('farmerName') as string}</h4>
                                     <p className="text-gray-600 mb-2">{t('farmerDesc') as string}</p>
@@ -27,16 +44,6 @@ const Stories: React.FC = () => {
                                         <span>⭐️⭐️⭐️⭐️⭐️</span>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="bg-hifeed-light p-8 lg:p-12 flex items-center justify-center slide-in-right">
-                            <div className="relative w-full flex items-center justify-center">
-                                <img
-                                    src="/arif-testimonial.png"
-                                    alt="Arif Irawan Testimonial"
-                                    className="rounded-2xl shadow-lg object-cover"
-                                    style={{ width: '80%', height: 'auto', maxWidth: '800px', minWidth: '300px' }}
-                                />
                             </div>
                         </div>
                     </div>

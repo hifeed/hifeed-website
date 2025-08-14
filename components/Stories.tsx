@@ -20,7 +20,7 @@ const Stories: React.FC = () => {
                             <div className="flex items-center space-x-4">
                                 <div className="bg-hifeed-green rounded-2xl w-16 h-16 flex items-center justify-center text-white font-bold text-xl bounce-gentle">AI</div>
                                 <div>
-                                    <h4 className="text-2xl font-bold text-gray-900 mb-1">Arif Irawan</h4>
+                                    <h4 className="text-2xl font-bold text-gray-900 mb-1">Karim</h4>
                                     <p className="text-gray-600 mb-2">Progressive Cattle Farmer, West Java</p>
                                     <div className="flex text-yellow-400 text-lg">
                                         <span>⭐⭐⭐⭐⭐</span>

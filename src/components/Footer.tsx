@@ -6,6 +6,14 @@ const Footer: React.FC = () => {
     return (
         <footer className="bg-hifeed-gray text-gray-600 py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Partners section */}
+                <div className="mb-16 text-center">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('partnersTitle') as string}</h3>
+                  <p className="text-gray-600 max-w-2xl mx-auto mb-6">{t('partnersDesc') as string}</p>
+                  <div className="flex items-center justify-center">
+                    <img src="/partner.png" alt="Partners" className="max-h-20 object-contain" />
+                  </div>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-2">
                         <div className="flex items-center space-x-3 mb-6">

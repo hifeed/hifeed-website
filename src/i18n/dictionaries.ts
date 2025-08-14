@@ -66,6 +66,8 @@ export interface FooterDict {
   privacyPolicy: string;
   termsOfService: string;
   contact: string;
+  partnersTitle?: string;
+  partnersDesc?: string;
 }
 
 export interface StoriesDict {
@@ -194,7 +196,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       about: 'Pioneering the future of sustainable cattle farming through revolutionary feed technology. Transforming agriculture for a net-zero world.',
       addressTitle: 'HiFeed',
       company: 'PT HiFeed Climate Tech Ventures',
-      address: 'Jl. K.H. Ahmad Dahlan No. 20, Malabar, Lengkong, Bandung, Jawa Barat 40262',
+      address: '33A Pagoda St, Singapore 059192',
       email: 'hello@hifeed.co',
       copyright: 'All rights reserved.',
       solutionsMenu: 'Solutions',
@@ -206,6 +208,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       privacyPolicy: 'Privacy Policy',
       termsOfService: 'Terms of Service',
       contact: 'Contact',
+      partnersTitle: 'Partners',
+      partnersDesc: 'Trusted by forward-thinking sustainability and agri-innovation partners',
     },
     impact: {
       badge: 'Global Impact',
@@ -239,7 +243,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titleB: 'Real Results',
       subtitle: 'Discover how HiFeed is transforming cattle operations across Indonesia',
       quote: 'HiFeed has completely transformed my operation. My cattle are healthier, feed costs dropped by 35%, and the convenience is incredible. The animals clearly prefer these pellets, and I’m saving 5 hours daily on feed preparation. This is the future of farming.',
-      farmerName: 'Arif Irawan',
+      farmerName: 'Karim',
       farmerDesc: 'Progressive Cattle Farmer, West Java',
     },
     solution: {
@@ -328,6 +332,8 @@ export const dictionaries: Record<Locale, Dictionary> = {
       privacyPolicy: 'Kebijakan Privasi',
       termsOfService: 'Syarat Layanan',
       contact: 'Kontak',
+      partnersTitle: 'Mitra',
+      partnersDesc: 'Dipercaya oleh mitra inovasi agrikultur dan keberlanjutan terdepan',
     },
     impact: {
       badge: 'Dampak Global',
@@ -361,7 +367,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       titleB: 'Hasil Nyata',
       subtitle: 'Temukan bagaimana HiFeed mengubah operasional peternakan di Indonesia',
       quote: 'HiFeed benar-benar mengubah usaha saya. Sapi lebih sehat, biaya pakan turun 35%, dan sangat praktis. Ternak jelas lebih suka pelet ini, dan saya hemat 5 jam kerja harian. Inilah masa depan peternakan.',
-      farmerName: 'Arif Irawan',
+      farmerName: 'Karim',
       farmerDesc: 'Peternak Sapi Modern, Jawa Barat',
     },
     solution: {

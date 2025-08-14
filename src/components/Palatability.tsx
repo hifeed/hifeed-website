@@ -21,7 +21,7 @@ const Palatability: React.FC = () => {
           </div>
           <div className="rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
             {/* Embed Google Drive dengan rasio 16:9 agar tidak gepeng */}
-            <div style={{ width: '100%', maxWidth: '700px', aspectRatio: '16/9', background: '#000', borderRadius: '1rem', overflow: 'hidden' }}>
+            <div style={{ width: '100%', maxWidth: '300px', aspectRatio: '9/16', background: '#000', borderRadius: '1rem', overflow: 'hidden' }}>
               <iframe
                 src="https://drive.google.com/file/d/1xTamyiCaRIt4kcBqMCc24GgtJQfx4MFO/preview"
                 allow="autoplay; encrypted-media"
