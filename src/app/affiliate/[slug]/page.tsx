@@ -4,9 +4,9 @@ import { redirect, notFound } from 'next/navigation';
 // Tambahkan entri baru sesuai kebutuhan.
 const affiliateMap: Record<string, string> = {
   dibales_ai_plus_checkout: 'https://cs.pake.ai/a/HIFEEDSALES1725/instagram-comment-to-dm/checkout',
-  dibales_ai_plus_sales : 'https://cs.pake.ai/a/HIFEEDSALES1725/instagram-comment-to-dm/sales/1',
+  dibales_ai_plus_description : 'https://cs.pake.ai/a/HIFEEDSALES1725/instagram-comment-to-dm/sales/1',
   dibales_ai_pro_checkout : 'https://cs.pake.ai/a/HIFEEDSALES1725/pro/checkout',
-  dibales_ai_pro_sales : 'https://cs.pake.ai/a/HIFEEDSALES1725/pro/sales/5'
+  dibales_ai_pro_description : 'https://cs.pake.ai/a/HIFEEDSALES1725/pro/sales/5'
 };
 
 export const runtime = 'nodejs'; // boleh dihapus jika tidak diperlukan
