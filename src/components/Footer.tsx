@@ -52,14 +52,11 @@ const Footer: React.FC = () => {
                     <div className="flex flex-col md:flex-row justify-between items-center">
                         <p className="text-gray-500 text-center md:text-left">&copy; {new Date().getFullYear()} HiFeed. {t('copyright') as string}</p>
                         <div className="flex space-x-4 mt-4 md:mt-0">
-                            <a href="#" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover">
+                            <a href="https://www.linkedin.com/company/hifeedx" target="_blank" rel="noopener noreferrer" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover" aria-label="LinkedIn">
                                <span className="text-sm font-bold text-hifeed-green">in</span>
                             </a>
-                            <a href="#" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover">
+                            <a href="https://www.instagram.com/hifeed.co" target="_blank" rel="noopener noreferrer" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover" aria-label="Instagram">
                                <span className="text-sm font-bold text-hifeed-green">ig</span>
-                            </a>
-                             <a href="#" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover">
-                                <span className="text-sm font-bold text-hifeed-green">tw</span>
                             </a>
                         </div>
                     </div>
