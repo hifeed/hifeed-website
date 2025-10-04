@@ -195,7 +195,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
     footer: {
       about: 'Pioneering the future of sustainable cattle farming through revolutionary feed technology. Transforming agriculture for a net-zero world.',
       addressTitle: 'HiFeed',
-      company: 'PT HiFeed Climate Tech Ventures',
+      company: 'FeedX Pte Ltd',
       address: '33A Pagoda St, Singapore 059192',
       email: 'hello@hifeed.co',
       copyright: 'All rights reserved.',
