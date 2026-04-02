@@ -30,7 +30,15 @@ const Consultation: React.FC = () => {
             return;
         }
         setIsSubmitting(true);
-        const phone = '6285960511645'; // Indonesian format without +
+
+        // Send to Slack in background (fire-and-forget)
+        fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        }).catch(() => {});
+
+        const phone = '6285117626252'; // Indonesian format without +
         const msg = `Halo HiFeed,%0A%0ASaya ingin konsultasi.%0A%0ANama: ${encodeURIComponent(formData.name)}%0ANomor WA: ${encodeURIComponent(formData.whatsapp)}%0ANama Peternakan: ${encodeURIComponent(formData.farmName)}%0ALokasi: ${encodeURIComponent(formData.location)}%0A${formData.herdSize ? `Populasi Ternak: ${encodeURIComponent(formData.herdSize)}%0A` : ''}${formData.feedType ? `Pakan Digunakan: ${encodeURIComponent(formData.feedType)}%0A` : ''}${formData.dailyFeed ? `Konsumsi Pakan/Hari/Sapi (kg): ${encodeURIComponent(formData.dailyFeed)}` : ''}`;
         const url = `https://wa.me/${phone}?text=${msg}`;
         window.location.href = url;

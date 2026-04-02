@@ -120,7 +120,7 @@ export default async function RootLayout({
           contactPoint: [
             {
               "@type": "ContactPoint",
-              email: "hello@hifeed.co",
+              email: "partnership@hifeed.co",
               contactType: "customer support",
               areaServed: "ID",
               availableLanguage: ["en", "id"],
