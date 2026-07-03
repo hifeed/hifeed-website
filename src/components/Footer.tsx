@@ -28,7 +28,7 @@ const Footer: React.FC = () => {
                           <div className="font-semibold">{t('addressTitle') as string}</div>
                           <div>{t('company') as string}</div>
                           <div>{t('address') as string}</div>
-                          <div><a href="mailto:hello@hifeed.co" className="hover:text-hifeed-green">{t('email') as string}</a></div>
+                          <div><a href="mailto:partnership@hifeed.co" className="hover:text-hifeed-green">{t('email') as string}</a></div>
                         </div>
                     </div>
                     <div>

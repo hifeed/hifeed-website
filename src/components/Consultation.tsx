@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslations } from "../i18n/LocaleProvider";
 
 const Consultation: React.FC = () => {
@@ -16,6 +16,17 @@ const Consultation: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [shake, setShake] = useState(false);
 
+    // Load cached form data
+    useEffect(() => {
+        try {
+            const cached = localStorage.getItem('hifeed_form_data');
+            if (cached) {
+                const data = JSON.parse(cached);
+                setFormData(prev => ({ ...prev, ...data }));
+            }
+        } catch { /* ignore */ }
+    }, []);
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -30,7 +41,20 @@ const Consultation: React.FC = () => {
             return;
         }
         setIsSubmitting(true);
-        const phone = '6285960511645'; // Indonesian format without +
+
+        // Send to Slack in background (fire-and-forget)
+        fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        }).catch(() => {});
+
+        // Cache form data for next time
+        try {
+            localStorage.setItem('hifeed_form_data', JSON.stringify(formData));
+        } catch { /* ignore */ }
+
+        const phone = '6285117626252'; // Indonesian format without +
         const msg = `Halo HiFeed,%0A%0ASaya ingin konsultasi.%0A%0ANama: ${encodeURIComponent(formData.name)}%0ANomor WA: ${encodeURIComponent(formData.whatsapp)}%0ANama Peternakan: ${encodeURIComponent(formData.farmName)}%0ALokasi: ${encodeURIComponent(formData.location)}%0A${formData.herdSize ? `Populasi Ternak: ${encodeURIComponent(formData.herdSize)}%0A` : ''}${formData.feedType ? `Pakan Digunakan: ${encodeURIComponent(formData.feedType)}%0A` : ''}${formData.dailyFeed ? `Konsumsi Pakan/Hari/Sapi (kg): ${encodeURIComponent(formData.dailyFeed)}` : ''}`;
         const url = `https://wa.me/${phone}?text=${msg}`;
         window.location.href = url;
