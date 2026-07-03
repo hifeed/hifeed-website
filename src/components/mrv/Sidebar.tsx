@@ -1,0 +1,123 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { LayoutDashboard, Users, Coins, Settings, ChevronLeft, ChevronRight, Leaf, Menu, X } from 'lucide-react';
+
+const navItems = [
+  { id: '/mrv', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { id: '/mrv/partners', label: 'Farm Partners', icon: Users },
+  { id: '/mrv/carbon', label: 'Carbon & Credits', icon: Coins },
+  { id: '/mrv/settings', label: 'Settings', icon: Settings },
+];
+
+export default function Sidebar() {
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
+
+  return (
+    <>
+      {/* Mobile hamburger */}
+      <button
+        onClick={() => setMobileOpen(true)}
+        className="lg:hidden fixed top-4 left-4 z-50 bg-emerald-900 text-white p-2 rounded-xl shadow-lg"
+        aria-label="Open menu"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed top-0 left-0 h-full z-50
+          bg-gradient-to-b from-emerald-950 via-emerald-900 to-gray-950
+          flex flex-col transition-all duration-300 ease-in-out
+          ${collapsed ? 'w-20' : 'w-64'}
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0 lg:relative lg:h-full
+        `}
+      >
+        {/* Logo area */}
+        <div className="flex items-center justify-between px-5 py-6 border-b border-emerald-800/50">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+              <Leaf className="w-6 h-6 text-emerald-400" />
+            </div>
+            {!collapsed && (
+              <div className="overflow-hidden">
+                <div className="text-white font-bold text-lg leading-tight">HiFeed</div>
+                <div className="text-emerald-400/70 text-[10px] uppercase tracking-widest font-medium">MRV Platform</div>
+              </div>
+            )}
+          </Link>
+
+          {/* Mobile close */}
+          <button
+            onClick={() => setMobileOpen(false)}
+            className="lg:hidden text-emerald-400 hover:text-white"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Desktop collapse */}
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="hidden lg:flex text-emerald-500/70 hover:text-emerald-300 transition-colors"
+          >
+            {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          </button>
+        </div>
+
+        {/* Nav items */}
+        <nav className="flex-1 px-3 py-6 space-y-1">
+          {navItems.map((item) => {
+            const isActive = item.exact ? pathname === item.id : pathname.startsWith(item.id);
+
+            return (
+              <Link
+                key={item.id}
+                href={item.id}
+                onClick={() => setMobileOpen(false)}
+                className={`
+                  w-full flex items-center gap-3 px-3 py-3 rounded-xl text-sm font-medium
+                  transition-all duration-200
+                  ${isActive
+                    ? 'bg-emerald-500/20 text-emerald-300 shadow-lg shadow-emerald-500/10'
+                    : 'text-gray-400 hover:text-white hover:bg-white/5'}
+                  ${collapsed ? 'justify-center' : ''}
+                `}
+              >
+                <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-emerald-400' : ''}`} />
+                {!collapsed && <span>{item.label}</span>}
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Bottom section */}
+        {!collapsed && (
+          <div className="px-4 py-5 border-t border-emerald-800/50">
+            <div className="bg-emerald-800/30 rounded-xl p-4">
+              <p className="text-emerald-300/90 text-xs font-semibold uppercase tracking-wider mb-1">Current Cycle</p>
+              <p className="text-white text-sm font-bold">Jan – Jun 2025</p>
+              <div className="mt-3 w-full bg-emerald-950 rounded-full h-1.5">
+                <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '65%' }} />
+              </div>
+              <p className="text-emerald-400/70 text-[11px] mt-2">65% of target achieved</p>
+            </div>
+          </div>
+        )}
+      </aside>
+    </>
+  );
+}
