@@ -2,20 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps';
+import { PARTNERS_DATA } from '@/lib/mrv/data';
 
 // Farm partner locations with approximate longitude and latitude
-const farmLocations = [
-  { id: 1, name: 'PT Jaya Makmur', region: 'Blitar, East Java', cattle: 240, coordinates: [112.1783, -8.0983], status: 'active' },
-  { id: 2, name: 'CV Sejahtera Farm', region: 'Boyolali, Central Java', cattle: 180, coordinates: [110.5975, -7.5317], status: 'active' },
-  { id: 3, name: 'Peternakan Maju', region: 'Lampung', cattle: 320, coordinates: [105.1500, -4.9500], status: 'active' },
-  { id: 4, name: 'Bali Cattle Co.', region: 'Tabanan, Bali', cattle: 95, coordinates: [115.1167, -8.4500], status: 'active' },
-  { id: 5, name: 'NTB Livestock', region: 'Dompu, NTB', cattle: 210, coordinates: [118.4667, -8.5333], status: 'active' },
-  { id: 6, name: 'Sulawesi Hijau', region: 'Bone, South Sulawesi', cattle: 150, coordinates: [120.1500, -4.8000], status: 'onboarding' },
-  { id: 7, name: 'Kalimantan Feed', region: 'Kotawaringin, Kalimantan', cattle: 75, coordinates: [111.7333, -2.2000], status: 'onboarding' },
-  { id: 8, name: 'Sumatra Ternak', region: 'Deli Serdang, North Sumatra', cattle: 130, coordinates: [98.7000, 3.4333], status: 'active' },
-  { id: 9, name: 'NTT Ranchers', region: 'Kupang, NTT', cattle: 180, coordinates: [123.5833, -10.1667], status: 'active' },
-  { id: 10, name: 'Pasundan Farm', region: 'Bandung, West Java', cattle: 160, coordinates: [107.6191, -6.9175], status: 'active' },
-];
+const farmLocations = PARTNERS_DATA.map((p, i) => ({
+  id: i + 1,
+  name: p.name,
+  region: p.region,
+  cattle: p.cattle,
+  coordinates: p.coordinates,
+  status: p.status,
+}));
 
 export default function IndonesiaMap() {
   const [mounted, setMounted] = useState(false);

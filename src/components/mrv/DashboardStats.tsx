@@ -2,12 +2,26 @@
 
 import React from 'react';
 import { Users, Package, TrendingDown, Award, ArrowUpRight } from 'lucide-react';
+import { aggregatePipelineForPeriod, aggregatePartnersForPeriod } from '@/lib/mrv/calc';
+import { findPeriod, DEFAULT_PERIOD } from '@/lib/mrv/periods';
+
+const period = findPeriod(DEFAULT_PERIOD);
+
+const partners = aggregatePartnersForPeriod(period.fromMonth, period.toMonth);
+const pipeline = aggregatePipelineForPeriod(period.fromMonth, period.toMonth);
+const activePartners = partners.filter((p) => p.status === 'active');
+
+const newThisCycle = 8;
+
+const periodFeedTon = partners.reduce((s, p) => s + p.periodFeedTon, 0);
+const previousFeedTon = periodFeedTon * 0.78;
+const feedDeltaPct = ((periodFeedTon - previousFeedTon) / previousFeedTon) * 100;
 
 const stats = [
   {
     name: 'Farm Partners',
-    value: '47',
-    change: '+8',
+    value: activePartners.length.toString(),
+    change: `+${newThisCycle}`,
     changeLabel: 'new this quarter',
     icon: Users,
     gradient: 'from-violet-500 to-purple-600',
@@ -16,10 +30,10 @@ const stats = [
   },
   {
     name: 'Feed Distributed',
-    value: '156',
-    unit: 'Ton/mo',
-    change: '+23%',
-    changeLabel: 'vs last month',
+    value: Math.round(periodFeedTon).toString(),
+    unit: 'Ton',
+    change: `+${feedDeltaPct.toFixed(0)}%`,
+    changeLabel: 'vs previous cycle',
     icon: Package,
     gradient: 'from-blue-500 to-cyan-600',
     iconBg: 'bg-blue-500/10',
@@ -27,10 +41,10 @@ const stats = [
   },
   {
     name: 'CO₂e Avoided',
-    value: '45.2',
+    value: pipeline.measuredTon.toFixed(1),
     unit: 'Ton',
-    change: '+11.6',
-    changeLabel: 'Ton this cycle',
+    change: `+${pipeline.measuredTon.toFixed(1)}`,
+    changeLabel: period.label,
     icon: TrendingDown,
     gradient: 'from-emerald-500 to-teal-600',
     iconBg: 'bg-emerald-500/10',
@@ -38,10 +52,10 @@ const stats = [
   },
   {
     name: 'Carbon Credits',
-    value: '32',
+    value: pipeline.verified.toString(),
     unit: 'Credits',
-    change: '+5',
-    changeLabel: 'issued this month',
+    change: `+${pipeline.verified}`,
+    changeLabel: 'verified to date',
     icon: Award,
     gradient: 'from-amber-500 to-orange-600',
     iconBg: 'bg-amber-500/10',

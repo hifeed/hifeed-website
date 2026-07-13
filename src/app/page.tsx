@@ -11,6 +11,7 @@ import Stories from "../components/Stories";
 import Palatability from "../components/Palatability";
 import Consultation from "../components/Consultation";
 import Footer from "../components/Footer";
+import InvestorsFloatingButton from "../components/InvestorsFloatingButton";
 
 export default function Home() {
   useEffect(() => {
@@ -50,6 +51,7 @@ export default function Home() {
         <Consultation />
       </main>
       <Footer />
+      <InvestorsFloatingButton />
     </>
   );
 }

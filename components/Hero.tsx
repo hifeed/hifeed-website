@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Link from 'next/link';
 
 const Hero: React.FC = () => {
 
@@ -27,9 +28,10 @@ const Hero: React.FC = () => {
                             <button onClick={() => scrollToSection('consultation')} className="bg-hifeed-green hover:bg-hifeed-dark text-white px-8 py-4 rounded-full text-lg font-semibold transition-all scale-hover">
                                 Start Your Transformation →
                             </button>
-                            <button onClick={() => scrollToSection('solution')} className="border-2 border-hifeed-green text-hifeed-green hover:bg-hifeed-green hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all scale-hover">
-                                Discover How
-                            </button>
+                            <Link href="/mrv/report" className="border-2 border-hifeed-green text-hifeed-green hover:bg-emerald-800 hover:text-white px-8 py-4 rounded-full text-lg font-semibold transition-all scale-hover flex items-center justify-center gap-2 text-center">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                For Investors →
+                            </Link>
                         </div>
                     </div>
                     <div className="relative slide-in-right">

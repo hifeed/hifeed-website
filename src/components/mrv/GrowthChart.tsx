@@ -4,21 +4,19 @@ import React from 'react';
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
+import { MONTHLY } from '@/lib/mrv/data';
 
-const data = [
-  { month: 'Jan', feed: 82, co2e: 12.4 },
-  { month: 'Feb', feed: 94, co2e: 16.1 },
-  { month: 'Mar', feed: 108, co2e: 21.3 },
-  { month: 'Apr', feed: 121, co2e: 27.8 },
-  { month: 'May', feed: 139, co2e: 35.6 },
-  { month: 'Jun', feed: 156, co2e: 45.2 },
-];
+const data = MONTHLY.map((m) => ({
+  month: m.label,
+  feed: m.feedTon,
+  co2e: +(m.savedG / 1_000_000).toFixed(2),
+}));
 
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number; name: string; color: string }>; label?: string }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-4 min-w-[160px]">
-        <p className="text-xs text-gray-500 font-medium mb-2">{label} 2025</p>
+        <p className="text-xs text-gray-500 font-medium mb-2">{label}</p>
         {payload.map((entry, i) => (
           <div key={i} className="flex items-center justify-between gap-4 py-0.5">
             <div className="flex items-center gap-2">
@@ -40,7 +38,7 @@ export default function GrowthChart() {
       <div className="px-6 py-5 border-b border-gray-100 flex items-center justify-between">
         <div>
           <h3 className="text-lg font-bold text-gray-900">Growth Trajectory</h3>
-          <p className="mt-1 text-sm text-gray-500">Feed distribution and cumulative CO₂e avoided over time.</p>
+          <p className="mt-1 text-sm text-gray-500">Feed distribution and cumulative CO₂e avoided over time (Jan 2025 – Jul 2026).</p>
         </div>
         <div className="flex items-center gap-4 text-xs">
           <div className="flex items-center gap-1.5">
@@ -69,7 +67,7 @@ export default function GrowthChart() {
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
-              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 11 }} dy={8} />
+              <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 11 }} dy={8} interval={1} />
               <YAxis axisLine={false} tickLine={false} tick={{ fill: '#9ca3af', fontSize: 11 }} />
               <Tooltip content={<CustomTooltip />} />
               <Area type="monotone" dataKey="feed" name="Feed Distributed" stroke="#3b82f6" strokeWidth={2.5} fill="url(#colorFeed)" dot={{ r: 4, fill: '#3b82f6', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6 }} />

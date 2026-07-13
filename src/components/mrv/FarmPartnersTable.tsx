@@ -2,19 +2,19 @@
 
 import React from 'react';
 import { MapPin } from 'lucide-react';
+import { aggregatePartnersForPeriod } from '@/lib/mrv/calc';
+import { findPeriod, DEFAULT_PERIOD } from '@/lib/mrv/periods';
 
-const farms = [
-  { name: 'PT Jaya Makmur', region: 'Blitar, East Java', cattle: 240, feed: 28.5, co2e: 10.2, status: 'active' as const },
-  { name: 'CV Sejahtera Farm', region: 'Boyolali, Central Java', cattle: 180, feed: 21.0, co2e: 7.6, status: 'active' as const },
-  { name: 'Peternakan Maju Bersama', region: 'Lampung Tengah, Lampung', cattle: 320, feed: 38.4, co2e: 13.8, status: 'active' as const },
-  { name: 'Bali Cattle Co.', region: 'Tabanan, Bali', cattle: 95, feed: 11.2, co2e: 4.1, status: 'active' as const },
-  { name: 'NTB Livestock Group', region: 'Dompu, NTB', cattle: 210, feed: 24.8, co2e: 9.0, status: 'active' as const },
-  { name: 'Sulawesi Hijau Farm', region: 'Bone, South Sulawesi', cattle: 150, feed: 17.6, co2e: 6.4, status: 'onboarding' as const },
-  { name: 'Kalimantan Feed Corp', region: 'Kotawaringin, Central Kalimantan', cattle: 75, feed: 8.8, co2e: 3.2, status: 'onboarding' as const },
-  { name: 'Sumatra Ternak Utama', region: 'Deli Serdang, North Sumatra', cattle: 130, feed: 15.2, co2e: 5.5, status: 'active' as const },
-  { name: 'NTT Ranchers Co-op', region: 'Kupang, NTT', cattle: 180, feed: 21.6, co2e: 7.8, status: 'active' as const },
-  { name: 'Pasundan Farm Group', region: 'Bandung, West Java', cattle: 160, feed: 18.8, co2e: 6.8, status: 'active' as const },
-];
+const period = findPeriod(DEFAULT_PERIOD);
+
+const farms = aggregatePartnersForPeriod(period.fromMonth, period.toMonth).map((p) => ({
+  name: p.name,
+  region: p.region,
+  cattle: p.cattle,
+  feed: p.periodFeedTon,
+  co2e: p.periodCO2eTon,
+  status: p.status,
+}));
 
 const colors = [
   'bg-emerald-500', 'bg-blue-500', 'bg-violet-500', 'bg-rose-500', 'bg-teal-500',
@@ -28,7 +28,7 @@ export default function FarmPartnersTable() {
         <div>
           <h3 className="text-lg font-bold text-gray-900">Farm Partner Network</h3>
           <p className="mt-1 text-sm text-gray-500">
-            Volume-based tracking of HiFeed distribution and estimated emission reductions per partner.
+            Volume-based tracking of HiFeed distribution and estimated emission reductions per partner ({period.label}).
           </p>
         </div>
         <div className="text-xs text-gray-400 font-medium bg-gray-50 px-3 py-1.5 rounded-lg">
@@ -42,7 +42,7 @@ export default function FarmPartnersTable() {
               <th className="px-6 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Farm Partner</th>
               <th className="px-6 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Location</th>
               <th className="px-6 py-3.5 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Cattle</th>
-              <th className="px-6 py-3.5 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Feed (Ton/mo)</th>
+              <th className="px-6 py-3.5 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Feed (Ton)</th>
               <th className="px-6 py-3.5 text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Est. CO₂e Avoided</th>
               <th className="px-6 py-3.5 text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Status</th>
             </tr>
@@ -89,7 +89,7 @@ export default function FarmPartnersTable() {
       {/* Summary footer */}
       <div className="px-6 py-4 bg-gray-50/80 border-t border-gray-100 flex flex-wrap items-center justify-between gap-3 text-xs">
         <p className="text-gray-500">Emission factor: <strong className="text-gray-700">0.36 Ton CO₂e per Ton feed</strong> (based on Verra VCS methodology)</p>
-        <p className="text-gray-400">Data as of June 2025</p>
+        <p className="text-gray-400">Period: {period.label}</p>
       </div>
     </div>
   );
