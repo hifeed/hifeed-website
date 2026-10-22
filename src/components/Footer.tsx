@@ -1,10 +1,11 @@
 "use client";
 import React from 'react';
-import { useMedia, useTranslations } from "../i18n/LocaleProvider";
+import { useMedia, useSiteSettings, useTranslations } from "../i18n/LocaleProvider";
 
 const Footer: React.FC = () => {
     const t = useTranslations('footer');
     const media = useMedia();
+    const settings = useSiteSettings();
     return (
         <footer className="bg-hifeed-gray text-gray-600 py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -29,7 +30,7 @@ const Footer: React.FC = () => {
                           <div className="font-semibold">{t('addressTitle') as string}</div>
                           <div>{t('company') as string}</div>
                           <div>{t('address') as string}</div>
-                          <div><a href="mailto:partnership@hifeed.co" className="hover:text-hifeed-green">{t('email') as string}</a></div>
+                          <div><a href={`mailto:${settings.contactEmail}`} className="hover:text-hifeed-green">{settings.contactEmail}</a></div>
                         </div>
                     </div>
                     <div>
@@ -44,8 +45,8 @@ const Footer: React.FC = () => {
                     <div>
                         <h4 className="text-lg font-bold mb-6 text-hifeed-green">{t('supportMenu') as string}</h4>
                         <ul className="space-y-3">
-                            <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('privacyPolicy') as string}</a></li>
-                            <li><a href="#" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('termsOfService') as string}</a></li>
+                            <li><a href={settings.privacyPolicyUrl || '#'} className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('privacyPolicy') as string}</a></li>
+                            <li><a href={settings.termsUrl || '#'} className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('termsOfService') as string}</a></li>
                             <li><a href="#consultation" className="text-gray-600 hover:text-hifeed-green transition-colors scale-hover block">{t('contact') as string}</a></li>
                         </ul>
                     </div>
@@ -54,10 +55,10 @@ const Footer: React.FC = () => {
                     <div className="flex flex-col md:flex-row justify-between items-center">
                         <p className="text-gray-500 text-center md:text-left">&copy; {new Date().getFullYear()} HiFeed. {t('copyright') as string}</p>
                         <div className="flex space-x-4 mt-4 md:mt-0">
-                            <a href="https://www.linkedin.com/company/hifeedx" target="_blank" rel="noopener noreferrer" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover" aria-label="LinkedIn">
+                            <a href={settings.linkedinUrl} target="_blank" rel="noopener noreferrer" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover" aria-label="LinkedIn">
                                <span className="text-sm font-bold text-hifeed-green">in</span>
                             </a>
-                            <a href="https://www.instagram.com/hifeed.co" target="_blank" rel="noopener noreferrer" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover" aria-label="Instagram">
+                            <a href={settings.instagramUrl} target="_blank" rel="noopener noreferrer" className="bg-hifeed-light w-10 h-10 rounded-xl flex items-center justify-center hover:bg-hifeed-green/20 transition-all scale-hover" aria-label="Instagram">
                                <span className="text-sm font-bold text-hifeed-green">ig</span>
                             </a>
                         </div>

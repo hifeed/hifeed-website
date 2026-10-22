@@ -12,3 +12,5 @@ export const SANITY_CACHE_TAG = 'sanity';
 
 /** ID dokumen singleton halaman utama. */
 export const LANDING_PAGE_ID = 'landingPage';
+export const SITE_SETTINGS_ID = 'siteSettings';
+export const CARBON_ACCOUNTING_ID = 'carbonAccounting';

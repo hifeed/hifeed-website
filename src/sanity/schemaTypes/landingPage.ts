@@ -50,10 +50,14 @@ function fieldsFromShape(shape: Record<string, unknown>, path: string): FieldDef
             name: arrayItemTypeName(key),
             fields: fieldsFromShape(item, fieldPath),
             preview: {
-              select: { title: 'title.en', subtitle: 'title.id', emoji: 'emoji.en' },
-              prepare: ({ title, subtitle, emoji }: { title?: string; subtitle?: string; emoji?: string }) => ({
-                title: [emoji, title].filter(Boolean).join(' '),
-                subtitle,
+              // Item benefit punya emoji/title; item statistik punya value/label.
+              select: {
+                title: 'title.en', subtitle: 'title.id', emoji: 'emoji.en',
+                value: 'value.en', label: 'label.en', labelId: 'label.id',
+              },
+              prepare: (s: Record<string, string | undefined>) => ({
+                title: [s.emoji ?? s.value, s.title ?? s.label].filter(Boolean).join(' '),
+                subtitle: s.subtitle ?? s.labelId,
               }),
             },
           },

@@ -3,10 +3,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { abatementTotals, formatMonthRange, CARBON_DATA_SOURCE } from '@/lib/mrv/carbon';
+import { formatMonthRange } from '@/lib/mrv/carbon';
+import { useCarbon } from '@/components/mrv/CarbonProvider';
 import { LayoutDashboard, Users, Coins, Settings, ChevronLeft, ChevronRight, Leaf, Menu, X, FileText } from 'lucide-react';
 
-const carbonTotals = abatementTotals();
 
 const navItems = [
   { id: '/mrv', label: 'Dashboard', icon: LayoutDashboard, exact: true },
@@ -17,6 +17,8 @@ const navItems = [
 ];
 
 export default function Sidebar() {
+  const carbon = useCarbon();
+  const carbonTotals = carbon.totals();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -117,7 +119,7 @@ export default function Sidebar() {
               <div className="mt-3 w-full bg-emerald-950 rounded-full h-1.5">
                 <div className="bg-emerald-400 h-1.5 rounded-full" style={{ width: '82%' }} />
               </div>
-              <p className="text-emerald-400/70 text-[11px] mt-2">Source: carbon accounting, {CARBON_DATA_SOURCE.updated}</p>
+              <p className="text-emerald-400/70 text-[11px] mt-2">Source: carbon accounting, {carbon.data.source.updated}</p>
             </div>
           </div>
         )}

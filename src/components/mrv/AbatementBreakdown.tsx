@@ -5,16 +5,8 @@ import { Beef, Sprout, Trees } from 'lucide-react';
 import {
   ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
-import {
-  ABATEMENT_SOURCES,
-  MONTHLY_ABATEMENT,
-  abatementTotals,
-  formatMonthRange,
-  CARBON_DATA_SOURCE,
-  type AbatementSource,
-} from '@/lib/mrv/carbon';
-
-const totals = abatementTotals();
+import { ABATEMENT_SOURCES, formatMonthRange, type AbatementSource } from '@/lib/mrv/carbon';
+import { useCarbon } from '@/components/mrv/CarbonProvider';
 
 const SOURCE_STYLE: Record<AbatementSource, { color: string; icon: typeof Beef; light: string; text: string }> = {
   enteric: { color: '#10b981', icon: Beef, light: 'bg-emerald-50', text: 'text-emerald-600' },
@@ -24,13 +16,6 @@ const SOURCE_STYLE: Record<AbatementSource, { color: string; icon: typeof Beef; 
 
 const SOURCES = Object.keys(ABATEMENT_SOURCES) as AbatementSource[];
 
-const chartData = MONTHLY_ABATEMENT.map((m) => ({
-  month: m.label,
-  enteric: +m.enteric.toFixed(2),
-  rawMaterial: +m.rawMaterial.toFixed(2),
-  carbonBank: +m.carbonBank.toFixed(2),
-  cumulative: +m.cumulative.toFixed(2),
-}));
 
 const SERIES_NAMES: Record<string, string> = {
   ...Object.fromEntries(SOURCES.map((s) => [s, ABATEMENT_SOURCES[s].short])),
@@ -56,12 +41,21 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 };
 
 export default function AbatementBreakdown() {
+  const carbon = useCarbon();
+  const totals = carbon.totals();
+  const chartData = carbon.monthly.map((m) => ({
+    month: m.label,
+    enteric: +m.enteric.toFixed(2),
+    rawMaterial: +m.rawMaterial.toFixed(2),
+    carbonBank: +m.carbonBank.toFixed(2),
+    cumulative: +m.cumulative.toFixed(2),
+  }));
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-100">
         <h3 className="text-lg font-bold text-gray-900">Carbon Abatement by Source</h3>
         <p className="mt-1 text-sm text-gray-500">
-          {formatMonthRange(totals.fromMonth, totals.toMonth)} · tCO₂e · source: {CARBON_DATA_SOURCE.file}
+          {formatMonthRange(totals.fromMonth, totals.toMonth)} · tCO₂e · source: {carbon.data.source.label}
         </p>
       </div>
 

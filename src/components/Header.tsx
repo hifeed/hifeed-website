@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { rememberLocale, useLocale, useMedia, useTranslations } from "../i18n/LocaleProvider";
+import { rememberLocale, useLocale, useMedia, useSiteSettings, useTranslations } from "../i18n/LocaleProvider";
 import { locales } from "../i18n/config";
 import type { Locale } from "../i18n/dictionaries";
 
@@ -28,6 +28,7 @@ const Header: React.FC = () => {
     const { locale } = useLocale();
     const t = useTranslations('nav');
     const media = useMedia();
+    const { careersUrl } = useSiteSettings();
 
     const scrollToSection = (id: string) => {
         const section = document.getElementById(id);
@@ -61,7 +62,7 @@ const Header: React.FC = () => {
                                 {link.label}
                             </button>
                         ))}
-                        <a href="https://lifeathifeed.notion.site/Life-at-HiFeed-43e47d221e8d4ff4b22126783533bd87" target="_blank" rel="noopener" className="text-gray-600 hover:text-hifeed-green font-medium transition-colors scale-hover">{t('careers') as string}</a>
+                        <a href={careersUrl} target="_blank" rel="noopener" className="text-gray-600 hover:text-hifeed-green font-medium transition-colors scale-hover">{t('careers') as string}</a>
                         <LanguageSwitch locale={locale} className="gap-2" />
                         <button onClick={() => scrollToSection('consultation')} className="bg-hifeed-green hover:bg-hifeed-dark text-white px-6 py-2 rounded-full font-semibold transition-all scale-hover">
                             {t('consultationCta') as string}
@@ -84,7 +85,7 @@ const Header: React.FC = () => {
                             {link.label}
                         </button>
                     ))}
-                    <a href="https://lifeathifeed.notion.site/Life-at-HiFeed-43e47d221e8d4ff4b22126783533bd87" target="_blank" rel="noopener" className="block w-full text-left text-gray-600 hover:text-hifeed-green font-medium py-2 transition-colors">{t('careers') as string}</a>
+                    <a href={careersUrl} target="_blank" rel="noopener" className="block w-full text-left text-gray-600 hover:text-hifeed-green font-medium py-2 transition-colors">{t('careers') as string}</a>
                     <button onClick={() => scrollToSection('consultation')} className="bg-hifeed-green hover:bg-hifeed-dark text-white px-6 py-2 rounded-full font-semibold w-full mt-4 transition-all">
                         {t('consultationCta') as string}
                     </button>

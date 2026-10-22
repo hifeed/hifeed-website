@@ -2,9 +2,11 @@
 
 import React from 'react';
 import { useTranslations } from '../i18n/LocaleProvider';
+import type { ImpactStat } from '../i18n/dictionaries';
 
 const Impact: React.FC = () => {
     const t = useTranslations();
+    const stats = (t('impact.stats') as ImpactStat[] | undefined) ?? [];
     return (
         <section id="impact" className="py-20 bg-hifeed-green text-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -36,22 +38,12 @@ const Impact: React.FC = () => {
                     </div>
                     <div className="bg-white/10 rounded-2xl p-6 slide-in-right">
                         <div className="grid grid-cols-2 gap-6 text-center">
-                            <div className="bg-white/10 rounded-2xl p-6 scale-hover pulse-scale">
-                                <div className="text-4xl font-bold text-yellow-300 mb-2">50%</div>
-                                <p className="opacity-90">{String(t('impact.emissionReduction') ?? 'Emission Reduction')}</p>
-                            </div>
-                            <div className="bg-white/10 rounded-2xl p-6 scale-hover pulse-scale" style={{ animationDelay: '0.5s' }}>
-                                <div className="text-4xl font-bold text-yellow-300 mb-2">30%</div>
-                                <p className="opacity-90">{String(t('impact.costSavings') ?? 'Cost Savings')}</p>
-                            </div>
-                            <div className="bg-white/10 rounded-2xl p-6 scale-hover pulse-scale" style={{ animationDelay: '1s' }}>
-                                <div className="text-4xl font-bold text-yellow-300 mb-2">100%</div>
-                                <p className="opacity-90">Carbon Traceable</p>
-                            </div>
-                            <div className="bg-white/10 rounded-2xl p-6 scale-hover pulse-scale" style={{ animationDelay: '1.5s' }}>
-                                <div className="text-4xl font-bold text-yellow-300 mb-2">25%</div>
-                                <p className="opacity-90">Time Savings</p>
-                            </div>
+                            {stats.map((stat, i) => (
+                                <div key={i} className="bg-white/10 rounded-2xl p-6 scale-hover pulse-scale" style={i ? { animationDelay: `${i * 0.5}s` } : undefined}>
+                                    <div className="text-4xl font-bold text-yellow-300 mb-2">{stat.value}</div>
+                                    <p className="opacity-90">{stat.label}</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>

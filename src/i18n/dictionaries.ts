@@ -9,6 +9,7 @@ export interface NavDict {
   careers: string;
   consultationCta: string;
   language: string;
+  investorsCta: string;
 }
 
 export interface HeroDict {
@@ -55,7 +56,6 @@ export interface FooterDict {
   addressTitle: string;
   company: string;
   address: string;
-  email: string;
   copyright: string;
   solutionsMenu: string;
   feedTech: string;
@@ -98,6 +98,7 @@ export interface SolutionDict {
   svgLabel6: string;
 }
 
+export interface ImpactStat { value: string; label: string }
 export interface ImpactDict {
   badge: string;
   titleA: string;
@@ -107,8 +108,7 @@ export interface ImpactDict {
   missionDesc: string;
   visionTitle: string;
   visionDesc: string;
-  emissionReduction: string;
-  costSavings: string;
+  stats: ImpactStat[];
 }
 
 export interface ChallengesDict {
@@ -162,6 +162,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       careers: 'Careers',
       consultationCta: 'Free Consultation',
       language: 'Language',
+      investorsCta: 'View MRV Report →',
     },
     hero: {
       badge: 'Revolutionary Farming Technology',
@@ -209,7 +210,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       addressTitle: 'HiFeed',
       company: 'FeedX Pte Ltd',
       address: '33A Pagoda St, Singapore 059192',
-      email: 'partnership@hifeed.co',
       copyright: 'All rights reserved.',
       solutionsMenu: 'Solutions',
       feedTech: 'Feed Technology',
@@ -232,8 +232,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       missionDesc: 'Revolutionizing cattle farming through carbon-negative feed solutions that deliver superior profitability while healing our planet.',
       visionTitle: 'Our Vision',
       visionDesc: 'Leading the global transition to net-zero agriculture, empowering farmers to thrive in a sustainable future.',
-      emissionReduction: 'Emission Reduction',
-      costSavings: 'Cost Savings',
+      stats: [
+        { value: '50%', label: 'Emission Reduction' },
+        { value: '30%', label: 'Cost Savings' },
+        { value: '100%', label: 'Carbon Traceable' },
+        { value: '25%', label: 'Time Savings' },
+      ],
     },
     challenges: {
       badge: 'Industry Challenges',
@@ -291,6 +295,7 @@ export const dictionaries: Record<Locale, Dictionary> = {
       careers: 'Karir',
       consultationCta: 'Konsultasi Gratis',
       language: 'Bahasa',
+      investorsCta: 'Lihat Laporan MRV →',
     },
     hero: {
       badge: 'Teknologi Peternakan Revolusioner',
@@ -338,7 +343,6 @@ export const dictionaries: Record<Locale, Dictionary> = {
       addressTitle: 'HiFeed',
       company: 'PT HiFeed Climate Tech Ventures',
       address: 'Jl. K.H. Ahmad Dahlan No. 20, Malabar, Lengkong, Bandung, Jawa Barat 40262',
-      email: 'partnership@hifeed.co',
       copyright: 'Hak cipta dilindungi.',
       solutionsMenu: 'Solusi',
       feedTech: 'Teknologi Pakan',
@@ -361,8 +365,12 @@ export const dictionaries: Record<Locale, Dictionary> = {
       missionDesc: 'Merevolusi peternakan sapi melalui solusi pakan karbon-negatif yang memberikan profitabilitas unggul sekaligus memulihkan bumi.',
       visionTitle: 'Visi Kami',
       visionDesc: 'Memimpin transisi global menuju peternakan net-zero, memberdayakan peternak untuk masa depan berkelanjutan.',
-      emissionReduction: 'Pengurangan Emisi',
-      costSavings: 'Penghematan Biaya',
+      stats: [
+        { value: '50%', label: 'Pengurangan Emisi' },
+        { value: '30%', label: 'Penghematan Biaya' },
+        { value: '100%', label: 'Karbon Terlacak' },
+        { value: '25%', label: 'Hemat Waktu' },
+      ],
     },
     challenges: {
       badge: 'Tantangan Industri',

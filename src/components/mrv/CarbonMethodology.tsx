@@ -1,27 +1,9 @@
 'use client';
 
 import React from 'react';
-import {
-  ABATEMENT_SOURCES,
-  ENTERIC_PARAMS,
-  ENTERIC_REDUCTION_T_PER_CATTLE_DAY,
-  RAW_MATERIAL_PARAMS,
-  NET_DRY_YIELD_KG_PER_YEAR,
-  OFFTAKE_SEQ_T_PER_KG,
-  OFFTAKE_PROCUREMENT,
-  CARBON_BANK_STATIONS,
-  FEED_DISTRIBUTION,
-  FEED_PRODUCT_LABELS,
-  dmiKgPerDay,
-  cattleDays,
-  entericReductionT,
-  offtakeSequestrationT,
-  abatementTotals,
-  type FeedProduct,
-} from '@/lib/mrv/carbon';
+import { ABATEMENT_SOURCES, FEED_PRODUCTS as PRODUCTS, FEED_PRODUCT_LABELS } from '@/lib/mrv/carbon';
+import { useCarbon } from '@/components/mrv/CarbonProvider';
 
-const totals = abatementTotals();
-const PRODUCTS = Object.keys(FEED_PRODUCT_LABELS) as FeedProduct[];
 const n = (v: number, digits = 2) => v.toLocaleString('en-US', { maximumFractionDigits: digits, minimumFractionDigits: digits });
 
 function MethodCard({ index, title, formula, children }: { index: number; title: string; formula: string; children: React.ReactNode }) {
@@ -36,7 +18,16 @@ function MethodCard({ index, title, formula, children }: { index: number; title:
 }
 
 export default function CarbonMethodology() {
-  const offtakeKg = OFFTAKE_PROCUREMENT.reduce((s, p) => s + p.kg, 0);
+  const carbon = useCarbon();
+  const totals = carbon.totals();
+  const ENTERIC_PARAMS = carbon.data.enteric;
+  const RAW_MATERIAL_PARAMS = carbon.data.rawMaterial;
+  const CARBON_BANK_STATIONS = carbon.data.carbonBankStations;
+  const FEED_DISTRIBUTION = carbon.data.feedDistribution;
+  const { dmiKgPerDay, cattleDays, entericReductionT, offtakeSequestrationT, offtakeKg } = carbon;
+  const ENTERIC_REDUCTION_T_PER_CATTLE_DAY = carbon.entericReductionPerCattleDay;
+  const NET_DRY_YIELD_KG_PER_YEAR = carbon.netDryYieldKgPerYear;
+  const OFFTAKE_SEQ_T_PER_KG = carbon.offtakeSeqPerKg;
 
   return (
     <div className="space-y-8">
@@ -57,7 +48,7 @@ export default function CarbonMethodology() {
           <MethodCard
             index={2}
             title={ABATEMENT_SOURCES.rawMaterial.label}
-            formula="Seq = offtake kg × (20 tCO₂e/ha/yr ÷ net dry yield kg/yr)"
+            formula={`Seq = offtake kg × (${RAW_MATERIAL_PARAMS.plantationSeqTPerHaYear} tCO₂e/ha/yr ÷ net dry yield kg/yr)`}
           >
             <li>{RAW_MATERIAL_PARAMS.freshYieldTPerHarvest} t fresh × {RAW_MATERIAL_PARAMS.harvestsPerYear} harvests × {Math.round(RAW_MATERIAL_PARAMS.dryMatterFraction * 100)}% DM × (1 − {Math.round(RAW_MATERIAL_PARAMS.dryingSpoilageFraction * 100)}% spoilage)</li>
             <li>Net dry yield = {n(NET_DRY_YIELD_KG_PER_YEAR, 0)} kg/yr</li>

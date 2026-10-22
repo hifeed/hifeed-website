@@ -83,7 +83,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
-  const { dictionary, media } = await getSiteContent(locale);
+  const { dictionary, media, settings } = await getSiteContent(locale);
 
   const jsonLd = [
     {
@@ -92,14 +92,11 @@ export default async function LocaleLayout({ children, params }: Props) {
       name: "HiFeed",
       url: siteUrl,
       logo: media.logo.startsWith("http") ? media.logo : `${siteUrl}${media.logo}`,
-      sameAs: [
-        "https://www.linkedin.com/company/hifeedx",
-        "https://www.instagram.com/hifeed.co",
-      ],
+      sameAs: [settings.linkedinUrl, settings.instagramUrl].filter(Boolean),
       contactPoint: [
         {
           "@type": "ContactPoint",
-          email: "partnership@hifeed.co",
+          email: settings.contactEmail,
           contactType: "customer support",
           areaServed: "ID",
           availableLanguage: ["en", "id"],
@@ -130,7 +127,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       </head>
       <body className="bg-white text-gray-800 font-sans overflow-x-hidden">
         <Analytics />
-        <LocaleProvider initialLocale={locale} dictionary={dictionary} media={media}>
+        <LocaleProvider initialLocale={locale} dictionary={dictionary} media={media} settings={settings}>
           {children}
         </LocaleProvider>
       </body>

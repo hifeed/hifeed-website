@@ -10,6 +10,9 @@ import { createClient } from '@sanity/client';
 import { dictionaries } from '../src/i18n/dictionaries.ts';
 import { localize } from '../src/sanity/lib/localized.ts';
 import { FALLBACK_AFFILIATE_LINKS } from '../src/sanity/affiliateFallback.ts';
+import { DEFAULT_SETTINGS } from '../src/sanity/siteDefaults.ts';
+import { DEFAULT_CARBON_DATA } from '../src/lib/mrv/carbon.ts';
+import { carbonToSanity } from '../src/sanity/lib/carbonMapping.ts';
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
@@ -38,7 +41,7 @@ async function uploadImage(file, alt) {
 async function seedLandingPage() {
   const existing = await client.getDocument('landingPage');
   if (existing && !force) {
-    console.log('landingPage already exists — skipped (use --force to overwrite).');
+    await syncLandingPageFields(existing);
     return;
   }
 
@@ -74,6 +77,41 @@ async function seedLandingPage() {
   console.log('✓ landingPage written');
 }
 
+// Dokumen sudah ada: tambahkan key dictionary yang belum ada, hapus key yang sudah tidak dipakai.
+// Konten yang sudah diedit di Studio tidak disentuh.
+async function syncLandingPageFields(existing) {
+  const content = localize(dictionaries.en, dictionaries.id);
+  const setIfMissing = {};
+  const unset = [];
+  for (const [section, fields] of Object.entries(content)) {
+    const current = existing[section] ?? {};
+    for (const [key, value] of Object.entries(fields)) {
+      if (current[key] === undefined) setIfMissing[`${section}.${key}`] = value;
+    }
+    for (const key of Object.keys(current)) {
+      if (!key.startsWith('_') && !(key in fields)) unset.push(`${section}.${key}`);
+    }
+  }
+  if (!Object.keys(setIfMissing).length && !unset.length) {
+    console.log('landingPage already up to date.');
+    return;
+  }
+  await client.patch('landingPage').setIfMissing(setIfMissing).unset(unset).commit();
+  console.log(`✓ landingPage synced — added: ${Object.keys(setIfMissing).join(', ') || '-'}; removed: ${unset.join(', ') || '-'}`);
+}
+
+async function seedSingletons() {
+  await client.createIfNotExists({ _id: 'siteSettings', _type: 'siteSettings', ...Object.fromEntries(Object.entries(DEFAULT_SETTINGS).filter(([, v]) => v)) });
+  console.log('✓ siteSettings ensured (existing values kept)');
+  const carbonExisting = await client.getDocument('carbonAccounting');
+  if (carbonExisting && !force) {
+    console.log('carbonAccounting already exists — skipped (use --force to overwrite).');
+  } else {
+    await client.createOrReplace({ _id: 'carbonAccounting', _type: 'carbonAccounting', ...carbonToSanity(DEFAULT_CARBON_DATA) });
+    console.log('✓ carbonAccounting written from workbook data');
+  }
+}
+
 async function seedAffiliateLinks() {
   const tx = client.transaction();
   for (const [slug, url] of Object.entries(FALLBACK_AFFILIATE_LINKS)) {
@@ -90,5 +128,6 @@ async function seedAffiliateLinks() {
 }
 
 await seedLandingPage();
+await seedSingletons();
 await seedAffiliateLinks();
 console.log('Done. Open /studio to review, then publish changes as needed.');

@@ -2,12 +2,11 @@
 
 import React from 'react';
 import { Sprout, ArrowRight, Wind, Beef } from 'lucide-react';
-import { abatementTotals } from '@/lib/mrv/carbon';
-
-const totals = abatementTotals();
-const seqT = totals.rawMaterial + totals.carbonBank;
+import { useCarbon } from '@/components/mrv/CarbonProvider';
 
 export default function CarbonCycleVisual() {
+  const totals = useCarbon().totals();
+  const seqT = totals.rawMaterial + totals.carbonBank;
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div className="px-6 py-5 border-b border-gray-100">

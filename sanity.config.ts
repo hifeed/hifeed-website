@@ -5,9 +5,9 @@ import { defineConfig } from 'sanity';
 import { structureTool } from 'sanity/structure';
 import { visionTool } from '@sanity/vision';
 import { schemaTypes } from './src/sanity/schemaTypes';
-import { apiVersion, dataset, projectId, LANDING_PAGE_ID } from './src/sanity/env';
+import { apiVersion, dataset, projectId, LANDING_PAGE_ID, SITE_SETTINGS_ID, CARBON_ACCOUNTING_ID } from './src/sanity/env';
 
-const SINGLETON_TYPES = new Set(['landingPage']);
+const SINGLETON_TYPES = new Set(['landingPage', 'siteSettings', 'carbonAccounting']);
 
 export default defineConfig({
   name: 'hifeed',
@@ -38,6 +38,15 @@ export default defineConfig({
               .title('Landing page')
               .id(LANDING_PAGE_ID)
               .child(S.document().schemaType('landingPage').documentId(LANDING_PAGE_ID)),
+            S.listItem()
+              .title('Site settings')
+              .id(SITE_SETTINGS_ID)
+              .child(S.document().schemaType('siteSettings').documentId(SITE_SETTINGS_ID)),
+            S.divider(),
+            S.listItem()
+              .title('Carbon accounting (MRV)')
+              .id(CARBON_ACCOUNTING_ID)
+              .child(S.document().schemaType('carbonAccounting').documentId(CARBON_ACCOUNTING_ID)),
             S.divider(),
             S.documentTypeListItem('affiliateLink').title('Affiliate links'),
           ]),

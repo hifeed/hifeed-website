@@ -20,6 +20,13 @@ Pengunjung ─► /en, /id (halaman statis) ◄── revalidateTag('sanity') �
 - **Gambar & video**: tab *Images & video* — logo, gambar & video palatability, foto testimoni,
   logo partner, URL video hero. Gambar disajikan dari CDN Sanity (webp/avif otomatis).
 - **Link afiliasi**: dokumen *Affiliate link* → `hifeed.co/affiliate/<slug>`.
+- **Site settings**: email kontak (footer + JSON-LD), nomor WhatsApp tujuan form konsultasi,
+  URL karier, LinkedIn, Instagram, Privacy policy & Terms (kosong = `#`).
+- **Carbon accounting (MRV)**: data dashboard `/mrv` — distribusi pakan per bulan, offtake
+  Indigofera + bulan pembukuan, stasiun carbon bank & pengukuran stoknya, parameter (DMI, EF,
+  yield, harga karbon) dan status kredit. Rumus tetap di `src/lib/mrv/carbon.ts`
+  (`npm run verify:carbon` mencocokkan dengan workbook). Bagian yang dikosongkan memakai data workbook.
+- Statistik Impact (angka + label EN/ID) ada di tab *Impact* → *Stats*; item bisa ditambah/dihapus.
 - Schema field konten **dibuat otomatis dari struktur `dictionaries.ts`**
   (`src/sanity/schemaTypes/landingPage.ts`). Menambah key baru di dictionary + komponen
   otomatis memunculkan field baru di Studio.
@@ -59,14 +66,15 @@ npm run sanity:seed
 ```
 
 Script mengunggah gambar dari `public/`, membuat dokumen *Landing page* dari `dictionaries.ts`
-(EN + ID), dan 4 link afiliasi. Aman dijalankan ulang (tidak menimpa; pakai `-- --force` untuk menimpa).
+(EN + ID), *Site settings*, *Carbon accounting* (data workbook), dan 4 link afiliasi. Bila *Landing page*
+sudah ada, script hanya menambah key dictionary baru dan menghapus key yang tidak dipakai lagi. Aman dijalankan ulang (tidak menimpa; pakai `-- --force` untuk menimpa).
 Token ini tidak perlu dipasang di Vercel.
 
 ### 4. Webhook revalidasi
 
 sanity.io/manage → *API* → *Webhooks* → *Create*:
 - URL: `https://hifeed.co/api/revalidate`
-- Dataset: `production`, Trigger: create/update/delete, Filter: `_type in ["landingPage", "affiliateLink"]`
+- Dataset: `production`, Trigger: create/update/delete, Filter: `_type in ["landingPage", "siteSettings", "carbonAccounting", "affiliateLink"]`
 - Secret: string acak → simpan juga sebagai `SANITY_REVALIDATE_SECRET` di env Vercel.
 
 ### 5. Env di Vercel

@@ -1,9 +1,10 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { useTranslations } from "../i18n/LocaleProvider";
+import { useSiteSettings, useTranslations } from "../i18n/LocaleProvider";
 
 const Consultation: React.FC = () => {
     const t = useTranslations('consultation');
+    const settings = useSiteSettings();
     const [formData, setFormData] = useState({
         name: '',
         whatsapp: '',
@@ -54,7 +55,7 @@ const Consultation: React.FC = () => {
             localStorage.setItem('hifeed_form_data', JSON.stringify(formData));
         } catch { /* ignore */ }
 
-        const phone = '6285117626252'; // Indonesian format without +
+        const phone = settings.whatsappNumber; // format internasional tanpa +
         const msg = `Halo HiFeed,%0A%0ASaya ingin konsultasi.%0A%0ANama: ${encodeURIComponent(formData.name)}%0ANomor WA: ${encodeURIComponent(formData.whatsapp)}%0ANama Peternakan: ${encodeURIComponent(formData.farmName)}%0ALokasi: ${encodeURIComponent(formData.location)}%0A${formData.herdSize ? `Populasi Ternak: ${encodeURIComponent(formData.herdSize)}%0A` : ''}${formData.feedType ? `Pakan Digunakan: ${encodeURIComponent(formData.feedType)}%0A` : ''}${formData.dailyFeed ? `Konsumsi Pakan/Hari/Sapi (kg): ${encodeURIComponent(formData.dailyFeed)}` : ''}`;
         const url = `https://wa.me/${phone}?text=${msg}`;
         window.location.href = url;

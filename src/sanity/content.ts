@@ -1,7 +1,12 @@
 import { dictionaries, type Dictionary, type Locale } from '../i18n/dictionaries';
 import { client, imageUrl, type ImageWithAlt } from './lib/client';
 import { delocalize, mergeContent } from './lib/localized';
-import { LANDING_PAGE_ID, SANITY_CACHE_TAG } from './env';
+import { LANDING_PAGE_ID, SITE_SETTINGS_ID, CARBON_ACCOUNTING_ID, SANITY_CACHE_TAG } from './env';
+import { carbonFromSanity } from './lib/carbonMapping';
+import { DEFAULT_SETTINGS, type SiteSettings } from './siteDefaults';
+
+export type { SiteSettings };
+import { DEFAULT_CARBON_DATA, type CarbonDataset } from '../lib/mrv/carbon';
 
 export interface SiteMedia {
   logo: string;
@@ -21,6 +26,7 @@ export interface SiteSeo {
 export interface SiteContent {
   dictionary: Dictionary;
   media: SiteMedia;
+  settings: SiteSettings;
   seo: SiteSeo;
   source: 'sanity' | 'static';
 }
@@ -60,12 +66,24 @@ type LandingPageDoc = Record<string, unknown> & {
   partnersImage?: ImageWithAlt;
 };
 
-const LANDING_PAGE_QUERY = `*[_type == "landingPage" && _id == $id][0]`;
+const SITE_QUERY = `{
+  "page": *[_type == "landingPage" && _id == $pageId][0],
+  "settings": *[_type == "siteSettings" && _id == $settingsId][0]
+}`;
+
+function mergeSettings(doc: Partial<SiteSettings> | null | undefined): SiteSettings {
+  const entries = Object.entries(DEFAULT_SETTINGS).map(([key, fallback]) => {
+    const value = doc?.[key as keyof SiteSettings];
+    return [key, typeof value === 'string' && value.trim() ? value.trim() : fallback];
+  });
+  return Object.fromEntries(entries) as SiteSettings;
+}
 
 function staticContent(locale: Locale): SiteContent {
   return {
     dictionary: dictionaries[locale],
     media: DEFAULT_MEDIA,
+    settings: DEFAULT_SETTINGS,
     seo: { ogImage: DEFAULT_OG_IMAGE, keywords: DEFAULT_KEYWORDS, noIndex: false },
     source: 'static',
   };
@@ -75,16 +93,19 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
   if (!client) return staticContent(locale);
 
   let doc: LandingPageDoc | null = null;
+  let settingsDoc: Partial<SiteSettings> | null = null;
   try {
-    doc = await client.fetch<LandingPageDoc | null>(
-      LANDING_PAGE_QUERY,
-      { id: LANDING_PAGE_ID },
+    const result = await client.fetch<{ page: LandingPageDoc | null; settings: Partial<SiteSettings> | null }>(
+      SITE_QUERY,
+      { pageId: LANDING_PAGE_ID, settingsId: SITE_SETTINGS_ID },
       { next: { tags: [SANITY_CACHE_TAG] } },
     );
+    doc = result.page;
+    settingsDoc = result.settings;
   } catch (error) {
-    console.error('[sanity] Failed to fetch landing page, using built-in content.', error);
+    console.error('[sanity] Failed to fetch site content, using built-in content.', error);
   }
-  if (!doc) return staticContent(locale);
+  if (!doc) return { ...staticContent(locale), settings: mergeSettings(settingsDoc) };
 
   const base = staticContent(locale);
   const dictionary = mergeContent(base.dictionary, delocalize(doc, locale));
@@ -109,6 +130,7 @@ export async function getSiteContent(locale: Locale): Promise<SiteContent> {
       storyImages: storyImages.length > 0 ? storyImages : DEFAULT_MEDIA.storyImages,
       partnersImage: imageUrl(doc.partnersImage, 1200) ?? DEFAULT_MEDIA.partnersImage,
     },
+    settings: mergeSettings(settingsDoc),
     seo: {
       ogImage: ogUrl
         ? { url: ogUrl, width: 1200, height: 630, alt: doc.ogImage?.alt }
@@ -131,5 +153,21 @@ export async function getAffiliateUrl(slug: string): Promise<string | null> {
   } catch (error) {
     console.error('[sanity] Failed to fetch affiliate link.', error);
     return null;
+  }
+}
+
+/** Data MRV: dokumen "Carbon accounting" digabung di atas data workbook. */
+export async function getCarbonData(): Promise<CarbonDataset> {
+  if (!client) return DEFAULT_CARBON_DATA;
+  try {
+    const doc = await client.fetch<Record<string, unknown> | null>(
+      `*[_type == "carbonAccounting" && _id == $id][0]`,
+      { id: CARBON_ACCOUNTING_ID },
+      { next: { tags: [SANITY_CACHE_TAG] } },
+    );
+    return carbonFromSanity(doc, DEFAULT_CARBON_DATA);
+  } catch (error) {
+    console.error('[sanity] Failed to fetch carbon accounting, using workbook data.', error);
+    return DEFAULT_CARBON_DATA;
   }
 }

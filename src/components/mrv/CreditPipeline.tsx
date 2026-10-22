@@ -2,17 +2,16 @@
 
 import React from 'react';
 import { CheckCircle2, Clock, ShoppingCart, ArrowRight, Ruler } from 'lucide-react';
-import { abatementTotals, CREDIT_STATUS } from '@/lib/mrv/carbon';
-
-const totals = abatementTotals();
+import { useCarbon } from '@/components/mrv/CarbonProvider';
 
 const fmt = (t: number | null) => (t == null ? '—' : `${t.toFixed(1)} t`);
 
-const stages = [
+function buildStages(measuredT: number, credit: { verifiedT: number | null; pendingT: number | null; retiredT: number | null }) {
+  return [
   {
     label: 'Measured',
     desc: 'tCO₂e abated across enteric, raw material offtake and carbon banks',
-    amount: totals.total,
+    amount: measuredT,
     icon: Ruler,
     bgClass: 'bg-emerald-500',
     textClass: 'text-emerald-600',
@@ -21,7 +20,7 @@ const stages = [
   {
     label: 'Verified',
     desc: 'Audited and certified by third-party verifier',
-    amount: CREDIT_STATUS.verifiedT,
+    amount: credit.verifiedT,
     icon: CheckCircle2,
     bgClass: 'bg-blue-500',
     textClass: 'text-blue-600',
@@ -30,7 +29,7 @@ const stages = [
   {
     label: 'Pending',
     desc: 'Awaiting audit for current reporting cycle',
-    amount: CREDIT_STATUS.pendingT,
+    amount: credit.pendingT,
     icon: Clock,
     bgClass: 'bg-amber-500',
     textClass: 'text-amber-600',
@@ -39,7 +38,7 @@ const stages = [
   {
     label: 'Sold / Retired',
     desc: 'Credits transacted on voluntary carbon market',
-    amount: CREDIT_STATUS.retiredT,
+    amount: credit.retiredT,
     icon: ShoppingCart,
     bgClass: 'bg-violet-500',
     textClass: 'text-violet-600',
@@ -54,8 +53,11 @@ const stages = [
   textClass: string;
   lightBg: string;
 }>;
+}
 
 export default function CreditPipeline() {
+  const carbon = useCarbon();
+  const stages = buildStages(carbon.totals().total, carbon.data.creditStatus);
   const recorded = stages.filter((s) => s.amount != null && s.amount > 0);
 
   return (

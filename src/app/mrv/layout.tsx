@@ -4,7 +4,8 @@ import { TriangleAlert } from 'lucide-react';
 import Sidebar from '@/components/mrv/Sidebar';
 import Analytics from '@/components/Analytics';
 import { siteUrl } from '@/i18n/config';
-import { CARBON_DATA_SOURCE } from '@/lib/mrv/carbon';
+import { CarbonProvider } from '@/components/mrv/CarbonProvider';
+import { getCarbonData } from '@/sanity/content';
 
 export const metadata: Metadata = {
   title: 'MRV System | HiFeed',
@@ -14,11 +15,12 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function MRVLayout({
+export default async function MRVLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const carbonData = await getCarbonData();
   return (
     <html lang="en">
       <head>
@@ -29,6 +31,7 @@ export default function MRVLayout({
       </head>
       <body className="bg-white text-gray-800 font-sans">
         <Analytics />
+        <CarbonProvider data={carbonData}>
         <div className="flex h-screen bg-gray-50/50 overflow-hidden">
           <Sidebar />
           <main className="flex-1 overflow-y-auto">
@@ -39,13 +42,14 @@ export default function MRVLayout({
               <TriangleAlert className="w-4 h-4 mt-0.5 shrink-0 text-amber-600" aria-hidden="true" />
               <p>
                 <span className="font-semibold">Prototype.</span>{' '}
-                Carbon abatement figures come from HiFeed&apos;s internal carbon accounting ({CARBON_DATA_SOURCE.updated}) and have not been verified by a third party.
+                Carbon abatement figures come from HiFeed&apos;s internal carbon accounting ({carbonData.source.updated}) and have not been verified by a third party.
                 Farm partner, supply chain and report figures are still illustrative.
               </p>
             </div>
             {children}
           </main>
         </div>
+        </CarbonProvider>
       </body>
     </html>
   );

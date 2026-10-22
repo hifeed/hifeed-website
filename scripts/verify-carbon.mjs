@@ -1,12 +1,11 @@
 // Verifikasi src/lib/mrv/carbon.ts terhadap nilai di workbook (sheet "Graph", kolom K–O).
 // Jalankan: node scripts/verify-carbon.mjs   (Node ≥ 22.18 / 24, type stripping bawaan)
 import assert from 'node:assert/strict';
-import {
-  MONTHLY_ABATEMENT,
-  abatementTotals,
-  ENTERIC_REDUCTION_T_PER_CATTLE_DAY,
-  OFFTAKE_SEQ_T_PER_KG,
-} from '../src/lib/mrv/carbon.ts';
+import { DEFAULT_CARBON } from '../src/lib/mrv/carbon.ts';
+
+const { monthly: MONTHLY_ABATEMENT, totals: abatementTotals } = DEFAULT_CARBON;
+const ENTERIC_REDUCTION_T_PER_CATTLE_DAY = DEFAULT_CARBON.entericReductionPerCattleDay;
+const OFFTAKE_SEQ_T_PER_KG = DEFAULT_CARBON.offtakeSeqPerKg;
 
 const EPS = 1e-6;
 const close = (actual, expected, what) =>
@@ -52,3 +51,13 @@ console.log('OK — matches workbook "Graph" sheet through 2026-06.');
 console.log(
   `All data (${all.fromMonth} → ${all.toMonth}): enteric ${all.enteric.toFixed(3)} + raw material ${all.rawMaterial.toFixed(3)} + carbon bank ${all.carbonBank.toFixed(3)} = ${all.total.toFixed(3)} tCO2e (USD ${all.valueUsd.toFixed(2)})`,
 );
+
+// Round-trip CMS: data workbook → dokumen Sanity → data harus identik (dan hasilnya sama).
+const { DEFAULT_CARBON_DATA, computeCarbon } = await import('../src/lib/mrv/carbon.ts');
+const { carbonToSanity, carbonFromSanity } = await import('../src/sanity/lib/carbonMapping.ts');
+const roundTrip = carbonFromSanity(JSON.parse(JSON.stringify(carbonToSanity(DEFAULT_CARBON_DATA))), DEFAULT_CARBON_DATA);
+assert.deepEqual(roundTrip, DEFAULT_CARBON_DATA, 'Sanity round-trip changes the carbon data');
+close(computeCarbon(roundTrip).totals().total, all.total, 'round-trip total');
+// Dokumen kosong → data workbook.
+assert.deepEqual(carbonFromSanity({}, DEFAULT_CARBON_DATA).feedDistribution, DEFAULT_CARBON_DATA.feedDistribution);
+console.log('OK — Sanity carbonAccounting mapping is lossless.');

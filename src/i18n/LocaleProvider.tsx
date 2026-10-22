@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Locale, Dictionary } from './dictionaries';
-import type { SiteMedia } from '../sanity/content';
+import type { SiteMedia, SiteSettings } from '../sanity/content';
 import { LOCALE_COOKIE } from './config';
 
 // Simpan pilihan bahasa agar middleware memakainya saat user membuka "/" lagi.
@@ -13,6 +13,7 @@ export function rememberLocale(l: Locale) {
 interface LocaleContextType {
   locale: Locale;
   media: SiteMedia;
+  settings: SiteSettings;
   t: (path: string) => unknown;
   setLocale: (l: Locale) => void;
 }
@@ -35,10 +36,11 @@ type LocaleProviderProps = {
   /** Konten (CMS digabung di atas dictionaries.ts) untuk bahasa ini, disiapkan di server. */
   dictionary: Dictionary;
   media: SiteMedia;
+  settings: SiteSettings;
   children: React.ReactNode;
 };
 
-export const LocaleProvider: React.FC<LocaleProviderProps> = ({ initialLocale, dictionary, media, children }) => {
+export const LocaleProvider: React.FC<LocaleProviderProps> = ({ initialLocale, dictionary, media, settings, children }) => {
   // Bahasa ditentukan oleh URL (/en, /id); middleware yang mengarahkan pengunjung ke URL yang tepat.
   const locale = initialLocale;
   const router = useRouter();
@@ -47,13 +49,14 @@ export const LocaleProvider: React.FC<LocaleProviderProps> = ({ initialLocale, d
     return {
       locale,
       media,
+      settings,
       t: (path: string) => get(dictionary, path),
       setLocale: (l: Locale) => {
         rememberLocale(l);
         router.push(`/${l}`);
       },
     } as LocaleContextType;
-  }, [locale, dictionary, media, router]);
+  }, [locale, dictionary, media, settings, router]);
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 };
@@ -71,4 +74,8 @@ export function useTranslations(base?: string) {
 
 export function useMedia() {
   return useLocale().media;
+}
+
+export function useSiteSettings() {
+  return useLocale().settings;
 }

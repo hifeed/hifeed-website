@@ -5,11 +5,10 @@ import DashboardStats from '@/components/mrv/DashboardStats';
 import IndonesiaMap from '@/components/mrv/IndonesiaMap';
 import CreditPipeline from '@/components/mrv/CreditPipeline';
 import AbatementBreakdown from '@/components/mrv/AbatementBreakdown';
-import { abatementTotals } from '@/lib/mrv/carbon';
-
-const totals = abatementTotals();
+import { useCarbon } from '@/components/mrv/CarbonProvider';
 
 export default function MRVDashboardPage() {
+  const totals = useCarbon().totals();
   return (
     <>
       {/* Hero / Top Bar */}

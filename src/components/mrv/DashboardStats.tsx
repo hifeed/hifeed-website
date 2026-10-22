@@ -2,18 +2,12 @@
 
 import React from 'react';
 import { Leaf, Package, Trees, CircleDollarSign } from 'lucide-react';
-import {
-  abatementTotals,
-  formatMonthRange,
-  FEED_DISTRIBUTED_KG,
-  CARBON_BANK_STATIONS,
-  CARBON_BANK_TOTAL_AREA_HA,
-  VCM_PRICE_USD_PER_TCO2E,
-} from '@/lib/mrv/carbon';
+import { formatMonthRange, type CarbonModel } from '@/lib/mrv/carbon';
+import { useCarbon } from '@/components/mrv/CarbonProvider';
 
-const totals = abatementTotals();
-
-const stats = [
+function buildStats(carbon: CarbonModel) {
+  const totals = carbon.totals();
+  return [
   {
     name: 'Total Carbon Abatement',
     value: totals.total.toFixed(1),
@@ -26,7 +20,7 @@ const stats = [
   },
   {
     name: 'Feed Distributed',
-    value: (FEED_DISTRIBUTED_KG / 1000).toFixed(1),
+    value: (carbon.feedDistributedKg / 1000).toFixed(1),
     unit: 'Ton',
     caption: 'Indigofera, Green Concentrate & Pellets',
     icon: Package,
@@ -36,9 +30,9 @@ const stats = [
   },
   {
     name: 'Carbon Bank Area',
-    value: CARBON_BANK_TOTAL_AREA_HA.toFixed(2),
+    value: carbon.carbonBankTotalAreaHa.toFixed(2),
     unit: 'Ha',
-    caption: `${CARBON_BANK_STATIONS.length} monitoring stations`,
+    caption: `${carbon.data.carbonBankStations.length} monitoring stations`,
     icon: Trees,
     gradient: 'from-violet-500 to-purple-600',
     iconBg: 'bg-violet-500/10',
@@ -48,15 +42,17 @@ const stats = [
     name: 'Estimated Value',
     value: Math.round(totals.valueUsd).toLocaleString('en-US'),
     unit: 'USD',
-    caption: `@ USD ${VCM_PRICE_USD_PER_TCO2E} / tCO₂e (Indonesia VCM 2024 avg.)`,
+    caption: `@ USD ${carbon.data.vcmPriceUsdPerT} / tCO₂e (reference carbon price)`,
     icon: CircleDollarSign,
     gradient: 'from-amber-500 to-orange-600',
     iconBg: 'bg-amber-500/10',
     iconColor: 'text-amber-500',
   },
 ];
+}
 
 export default function DashboardStats() {
+  const stats = buildStats(useCarbon());
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
       {stats.map((item) => (
