@@ -1,62 +1,55 @@
 'use client';
 
 import React from 'react';
-import { Users, Package, TrendingDown, Award, ArrowUpRight } from 'lucide-react';
-import { aggregatePipelineForPeriod, aggregatePartnersForPeriod } from '@/lib/mrv/calc';
-import { findPeriod, DEFAULT_PERIOD } from '@/lib/mrv/periods';
+import { Leaf, Package, Trees, CircleDollarSign } from 'lucide-react';
+import {
+  abatementTotals,
+  formatMonthRange,
+  FEED_DISTRIBUTED_KG,
+  CARBON_BANK_STATIONS,
+  CARBON_BANK_TOTAL_AREA_HA,
+  VCM_PRICE_USD_PER_TCO2E,
+} from '@/lib/mrv/carbon';
 
-const period = findPeriod(DEFAULT_PERIOD);
-
-const partners = aggregatePartnersForPeriod(period.fromMonth, period.toMonth);
-const pipeline = aggregatePipelineForPeriod(period.fromMonth, period.toMonth);
-const activePartners = partners.filter((p) => p.status === 'active');
-
-const newThisCycle = 8;
-
-const periodFeedTon = partners.reduce((s, p) => s + p.periodFeedTon, 0);
-const previousFeedTon = periodFeedTon * 0.78;
-const feedDeltaPct = ((periodFeedTon - previousFeedTon) / previousFeedTon) * 100;
+const totals = abatementTotals();
 
 const stats = [
   {
-    name: 'Farm Partners',
-    value: activePartners.length.toString(),
-    change: `+${newThisCycle}`,
-    changeLabel: 'new this quarter',
-    icon: Users,
-    gradient: 'from-violet-500 to-purple-600',
-    iconBg: 'bg-violet-500/10',
-    iconColor: 'text-violet-500',
+    name: 'Total Carbon Abatement',
+    value: totals.total.toFixed(1),
+    unit: 'tCO₂e',
+    caption: formatMonthRange(totals.fromMonth, totals.toMonth),
+    icon: Leaf,
+    gradient: 'from-emerald-500 to-teal-600',
+    iconBg: 'bg-emerald-500/10',
+    iconColor: 'text-emerald-500',
   },
   {
     name: 'Feed Distributed',
-    value: Math.round(periodFeedTon).toString(),
+    value: (FEED_DISTRIBUTED_KG / 1000).toFixed(1),
     unit: 'Ton',
-    change: `+${feedDeltaPct.toFixed(0)}%`,
-    changeLabel: 'vs previous cycle',
+    caption: 'Indigofera, Green Concentrate & Pellets',
     icon: Package,
     gradient: 'from-blue-500 to-cyan-600',
     iconBg: 'bg-blue-500/10',
     iconColor: 'text-blue-500',
   },
   {
-    name: 'CO₂e Avoided',
-    value: pipeline.measuredTon.toFixed(1),
-    unit: 'Ton',
-    change: `+${pipeline.measuredTon.toFixed(1)}`,
-    changeLabel: period.label,
-    icon: TrendingDown,
-    gradient: 'from-emerald-500 to-teal-600',
-    iconBg: 'bg-emerald-500/10',
-    iconColor: 'text-emerald-500',
+    name: 'Carbon Bank Area',
+    value: CARBON_BANK_TOTAL_AREA_HA.toFixed(2),
+    unit: 'Ha',
+    caption: `${CARBON_BANK_STATIONS.length} monitoring stations`,
+    icon: Trees,
+    gradient: 'from-violet-500 to-purple-600',
+    iconBg: 'bg-violet-500/10',
+    iconColor: 'text-violet-500',
   },
   {
-    name: 'Carbon Credits',
-    value: pipeline.verified.toString(),
-    unit: 'Credits',
-    change: `+${pipeline.verified}`,
-    changeLabel: 'verified to date',
-    icon: Award,
+    name: 'Estimated Value',
+    value: Math.round(totals.valueUsd).toLocaleString('en-US'),
+    unit: 'USD',
+    caption: `@ USD ${VCM_PRICE_USD_PER_TCO2E} / tCO₂e (Indonesia VCM 2024 avg.)`,
+    icon: CircleDollarSign,
     gradient: 'from-amber-500 to-orange-600',
     iconBg: 'bg-amber-500/10',
     iconColor: 'text-amber-500',
@@ -79,10 +72,6 @@ export default function DashboardStats() {
               <div className={`w-11 h-11 rounded-xl ${item.iconBg} flex items-center justify-center`}>
                 <item.icon className={`w-5 h-5 ${item.iconColor}`} />
               </div>
-              <span className="inline-flex items-center gap-0.5 text-emerald-600 text-xs font-bold bg-emerald-50 px-2 py-1 rounded-lg">
-                <ArrowUpRight className="w-3 h-3" />
-                {item.change}
-              </span>
             </div>
 
             <p className="text-gray-500 text-xs font-medium uppercase tracking-wider mb-1">{item.name}</p>
@@ -92,7 +81,7 @@ export default function DashboardStats() {
               {item.unit && <span className="text-sm font-medium text-gray-400">{item.unit}</span>}
             </div>
 
-            <p className="text-gray-400 text-[11px] mt-1.5">{item.changeLabel}</p>
+            <p className="text-gray-400 text-[11px] mt-1.5">{item.caption}</p>
           </div>
         </div>
       ))}

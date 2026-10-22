@@ -1,9 +1,10 @@
 "use client";
 import React from 'react';
-import { useTranslations } from "../i18n/LocaleProvider";
+import { useMedia, useTranslations } from "../i18n/LocaleProvider";
 
 const Footer: React.FC = () => {
     const t = useTranslations('footer');
+    const media = useMedia();
     return (
         <footer className="bg-hifeed-gray text-gray-600 py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -12,14 +13,14 @@ const Footer: React.FC = () => {
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">{t('partnersTitle') as string}</h3>
                   <p className="text-gray-600 max-w-2xl mx-auto mb-6">{t('partnersDesc') as string}</p>
                   <div className="flex items-center justify-center">
-                    <img src="/partner.png" alt="Partners" className="max-h-20 object-contain" />
+                    <img src={media.partnersImage} alt={(t('partnersTitle') as string) || 'Partners'} className="max-h-20 object-contain" />
                   </div>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     <div className="lg:col-span-2">
                         <div className="flex items-center space-x-3 mb-6">
                             <div className="w-12 h-12 rounded-xl flex items-center justify-center bounce-gentle overflow-hidden">
-                                <img src="/hifeed_logo.png" alt="HiFeed Logo" className="w-full h-full object-contain" />
+                                <img src={media.logo} alt="HiFeed Logo" className="w-full h-full object-contain" />
                             </div>
                             <div className="text-3xl font-bold text-hifeed-green">HiFeed</div>
                         </div>

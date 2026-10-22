@@ -2,6 +2,10 @@
 
 import React from 'react';
 import { Sprout, ArrowRight, Wind, Beef } from 'lucide-react';
+import { abatementTotals } from '@/lib/mrv/carbon';
+
+const totals = abatementTotals();
+const seqT = totals.rawMaterial + totals.carbonBank;
 
 export default function CarbonCycleVisual() {
   return (
@@ -29,7 +33,7 @@ export default function CarbonCycleVisual() {
               { step: '01', title: 'Crop Cultivation', desc: 'Feed raw materials are sustainably farmed by local agricultural partners' },
               { step: '02', title: 'Photosynthesis', desc: 'Plants absorb atmospheric CO₂ and store carbon in biomass during growth' },
               { step: '03', title: 'Harvest & Processing', desc: 'Raw materials are harvested and processed into HiFeed complete feed pellets' },
-              { step: '04', title: 'Carbon Stored', desc: 'CO₂ absorbed during growth is quantified and counted as carbon credits', value: '16.7 Ton CO₂e' },
+              { step: '04', title: 'Carbon Stored', desc: 'Carbon from raw material offtake and carbon bank stations is quantified in tCO₂e', value: `${seqT.toFixed(1)} Ton CO₂e` },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-4 group">
                 <div className="flex flex-col items-center">
@@ -71,7 +75,7 @@ export default function CarbonCycleVisual() {
               { step: '01', title: 'Feed Consumption', desc: 'Cattle consume HiFeed pellets containing anti-methanogenic compounds' },
               { step: '02', title: 'Rumen Fermentation', desc: 'Active compounds inhibit methanogen microbes in the rumen, reducing CH₄ production' },
               { step: '03', title: 'Emission Reduction', desc: 'Enteric methane emissions from cattle are significantly reduced' },
-              { step: '04', title: 'Avoided Emissions', desc: 'Unreleased CH₄ (GWP₁₀₀ = 28× CO₂) is quantified as verified carbon credits', value: '28.5 Ton CO₂e' },
+              { step: '04', title: 'Avoided Emissions', desc: 'Avoided CH₄ is quantified in tCO₂e against the FAO GLEAM baseline emission factor', value: `${totals.enteric.toFixed(1)} Ton CO₂e` },
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-4 group">
                 <div className="flex flex-col items-center">
@@ -102,15 +106,15 @@ export default function CarbonCycleVisual() {
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-blue-500" />
-            <span className="text-xs text-gray-600 font-medium">Sequestration: <strong className="text-blue-600">16.7 Ton</strong></span>
+            <span className="text-xs text-gray-600 font-medium">Sequestration: <strong className="text-blue-600">{seqT.toFixed(1)} Ton</strong></span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-emerald-500" />
-            <span className="text-xs text-gray-600 font-medium">Methane Reduction: <strong className="text-emerald-600">28.5 Ton</strong></span>
+            <span className="text-xs text-gray-600 font-medium">Methane Reduction: <strong className="text-emerald-600">{totals.enteric.toFixed(1)} Ton</strong></span>
           </div>
         </div>
         <div className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white text-sm font-bold px-5 py-2 rounded-xl">
-          Total: 45.2 Ton CO₂e
+          Total: {totals.total.toFixed(1)} Ton CO₂e
         </div>
       </div>
     </div>

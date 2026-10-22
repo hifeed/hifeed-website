@@ -1,12 +1,15 @@
 import type { MetadataRoute } from 'next'
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hifeed.co'
+import { isIndexable, siteUrl } from '../i18n/config'
 
 export default function robots(): MetadataRoute.Robots {
+  if (!isIndexable) {
+    return { rules: { userAgent: '*', disallow: '/' } }
+  }
   return {
     rules: {
       userAgent: '*',
       allow: '/',
+      disallow: ['/api/', '/studio'],
     },
     sitemap: `${siteUrl}/sitemap.xml`,
     host: siteUrl,

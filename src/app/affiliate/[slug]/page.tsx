@@ -1,24 +1,12 @@
 import { redirect, notFound } from 'next/navigation';
+import { getAffiliateUrl } from '@/sanity/content';
+import { FALLBACK_AFFILIATE_LINKS } from '@/sanity/affiliateFallback';
 
-// Mapping slug affiliate ke URL tujuan.
-// Tambahkan entri baru sesuai kebutuhan.
-const affiliateMap: Record<string, string> = {
-  dibales_ai_plus_checkout: 'https://cs.pake.ai/a/HIFEEDSALES1725/instagram-comment-to-dm/checkout',
-  dibales_ai_plus_description : 'https://cs.pake.ai/a/HIFEEDSALES1725/instagram-comment-to-dm/sales/1',
-  dibales_ai_pro_checkout : 'https://cs.pake.ai/a/HIFEEDSALES1725/pro/checkout',
-  dibales_ai_pro_description : 'https://cs.pake.ai/a/HIFEEDSALES1725/pro/sales/5'
-};
-
-export const runtime = 'nodejs'; // boleh dihapus jika tidak diperlukan
-
-// Accept unknown props and assert the shape only where needed to avoid TypeScript/PageProps conflicts and ESLint `no-explicit-any`.
-export default function AffiliateRedirect(props: unknown) {
-  const params = (props as { params?: { slug?: string } })?.params;
-  const slug = params?.slug;
-
-  const target = slug ? affiliateMap[slug] : undefined;
-  if (target) {
-    redirect(target);
-  }
+// Link afiliasi dikelola di CMS (dokumen "Affiliate link"); map bawaan dipakai bila
+// Sanity belum terhubung atau slug belum ada di CMS.
+export default async function AffiliateRedirect({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const target = (await getAffiliateUrl(slug)) ?? FALLBACK_AFFILIATE_LINKS[slug];
+  if (target) redirect(target);
   notFound();
 }

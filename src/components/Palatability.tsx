@@ -1,9 +1,12 @@
+"use client";
+
 import React from 'react';
-import { useTranslations } from "../i18n/LocaleProvider";
+import { useMedia, useTranslations } from "../i18n/LocaleProvider";
 import Image from 'next/image';
 
 const Palatability: React.FC = () => {
   const t = useTranslations('palatability');
+  const media = useMedia();
   return (
     <section id="palatability" className="py-20 bg-hifeed-gray">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,13 +20,14 @@ const Palatability: React.FC = () => {
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           <div className="rounded-2xl overflow-hidden shadow-lg">
-            <Image src="/cettle-feed-pellets.jpg" alt="HiFeed Pellets" width={1200} height={800} className="w-full h-auto object-cover" />
+            <Image src={media.palatabilityImage.src} alt={media.palatabilityImage.alt} width={1200} height={800} className="w-full h-auto object-cover" />
           </div>
           <div className="rounded-2xl overflow-hidden shadow-lg flex items-center justify-center">
             {/* Embed Google Drive dengan rasio 16:9 agar tidak gepeng */}
             <div style={{ width: '100%', maxWidth: '300px', aspectRatio: '9/16', background: '#000', borderRadius: '1rem', overflow: 'hidden' }}>
               <iframe
-                src="https://drive.google.com/file/d/1xTamyiCaRIt4kcBqMCc24GgtJQfx4MFO/preview"
+                src={media.palatabilityVideoUrl}
+                title="Cattle eating HiFeed pellets"
                 allow="autoplay; encrypted-media"
                 allowFullScreen
                 style={{ width: '100%', height: '100%', border: 0 }}

@@ -4,7 +4,10 @@ import React from 'react';
 import DashboardStats from '@/components/mrv/DashboardStats';
 import IndonesiaMap from '@/components/mrv/IndonesiaMap';
 import CreditPipeline from '@/components/mrv/CreditPipeline';
-import GrowthChart from '@/components/mrv/GrowthChart';
+import AbatementBreakdown from '@/components/mrv/AbatementBreakdown';
+import { abatementTotals } from '@/lib/mrv/carbon';
+
+const totals = abatementTotals();
 
 export default function MRVDashboardPage() {
   return (
@@ -24,17 +27,17 @@ export default function MRVDashboardPage() {
                 MRV Dashboard
               </h1>
               <p className="mt-2 text-emerald-200/60 text-sm max-w-xl">
-                Real-time monitoring of carbon emission reductions across HiFeed&apos;s farm partner network in Indonesia.
+                Carbon abatement from enteric methane reduction, raw material offtake and carbon banks across HiFeed&apos;s operations in Indonesia.
               </p>
             </div>
             <div className="flex items-center gap-3">
               <div className="bg-white/10 backdrop-blur-sm border border-white/10 rounded-2xl px-5 py-3 text-center">
                 <p className="text-emerald-300/80 text-[10px] uppercase tracking-widest font-medium">Total Impact</p>
-                <p className="text-white text-2xl font-black mt-0.5">45.2 <span className="text-sm font-medium text-emerald-300">Ton CO₂e</span></p>
+                <p className="text-white text-2xl font-black mt-0.5">{totals.total.toFixed(1)} <span className="text-sm font-medium text-emerald-300">Ton CO₂e</span></p>
               </div>
               <div className="bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/20 rounded-2xl px-5 py-3 text-center">
-                <p className="text-emerald-300/80 text-[10px] uppercase tracking-widest font-medium">Methodology</p>
-                <p className="text-emerald-400 text-sm font-bold mt-1">Verra VCS</p>
+                <p className="text-emerald-300/80 text-[10px] uppercase tracking-widest font-medium">Abatement Sources</p>
+                <p className="text-emerald-400 text-sm font-bold mt-1">Enteric · Offtake · Carbon Banks</p>
               </div>
             </div>
           </div>
@@ -48,7 +51,7 @@ export default function MRVDashboardPage() {
         </section>
 
         <section>
-          <IndonesiaMap />
+          <AbatementBreakdown />
         </section>
 
         <section>
@@ -56,8 +59,9 @@ export default function MRVDashboardPage() {
         </section>
 
         <section>
-          <GrowthChart />
+          <IndonesiaMap />
         </section>
+
       </div>
     </>
   );

@@ -6,16 +6,24 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "verify:carbon": "node --no-warnings scripts/verify-carbon.mjs",
+    "verify:cms": "node --no-warnings scripts/verify-cms-mapping.mjs",
+    "sanity:seed": "node --no-warnings --env-file=.env.local scripts/sanity-seed.mjs"
   },
   "dependencies": {
     "@react-pdf/renderer": "^4.3.1",
+    "@sanity/image-url": "^1.2.0",
+    "@sanity/vision": "^4.22.1",
     "lucide-react": "^1.23.0",
     "next": "^15.5.14",
+    "next-sanity": "^11.6.13",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-simple-maps": "^3.0.0",
-    "recharts": "^3.9.1"
+    "recharts": "^3.9.1",
+    "sanity": "^4.22.1",
+    "styled-components": "^6.6.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

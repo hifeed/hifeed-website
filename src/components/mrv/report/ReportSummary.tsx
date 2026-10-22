@@ -39,7 +39,7 @@ export default function ReportSummary({ periodKey }: ReportSummaryProps) {
         <KpiCard icon={Sprout} accent="emerald" label="Active Plantation" value={sc.totalHectares.toFixed(0)} unit="Ha" sub={`${sc.indigoHectares.toFixed(0)} Indigofera + ${sc.pakcoyHectares.toFixed(0)} Pakcoy`} />
         <KpiCard icon={Wheat} accent="teal" label="Biomass Harvested" value={sc.totalFreshBiomassTon.toFixed(0)} unit="Ton" sub="Fresh biomass (dry matter: 25%)" />
         <KpiCard icon={Factory} accent="blue" label="Pellet Produced" value={formatKg(sc.totalPelletKg)} unit="" sub={`${sc.totalDistributionTon.toFixed(1)} Ton distributed`} />
-        <KpiCard icon={Beef} accent="violet" label="Fed to Cattle" value={formatKg(sc.totalConsumptionKg)} unit="" sub={`${totalCattle.toLocaleString()} cattle @ 12 kg/day`} />
+        <KpiCard icon={Beef} accent="violet" label="Fed to Cattle" value={formatKg(sc.totalConsumptionKg)} unit="" sub={`${totalCattle.toLocaleString('en-US')} cattle @ 12 kg/day`} />
       </section>
 
       {/* Supply Chain Flow */}
@@ -74,7 +74,7 @@ export default function ReportSummary({ periodKey }: ReportSummaryProps) {
                   <td className="px-4 py-3 text-center text-emerald-600 font-semibold">{row.indigoHa}</td>
                   <td className="px-4 py-3 text-center text-teal-600 font-semibold">{row.pakcoyHa}</td>
                   <td className="px-4 py-3 text-center font-bold text-gray-900">{row.totalHa}</td>
-                  <td className="px-4 py-3 text-right text-gray-700">{row.harvestsTon.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right text-gray-700">{row.harvestsTon.toLocaleString('en-US')}</td>
                   <td className="px-4 py-3 text-right text-blue-600 font-semibold">{formatKg(row.pelletKg)}</td>
                   <td className="px-4 py-3 text-right text-emerald-700 font-bold">{row.co2eTon.toFixed(2)}</td>
                 </tr>
@@ -86,7 +86,7 @@ export default function ReportSummary({ periodKey }: ReportSummaryProps) {
                 <td className="px-4 py-3 text-center text-emerald-600">{sc.indigoHectares.toFixed(1)}</td>
                 <td className="px-4 py-3 text-center text-teal-600">{sc.pakcoyHectares.toFixed(1)}</td>
                 <td className="px-4 py-3 text-center text-gray-900">{sc.totalHectares.toFixed(1)}</td>
-                <td className="px-4 py-3 text-right text-gray-900">{sc.totalFreshBiomassTon.toLocaleString()}</td>
+                <td className="px-4 py-3 text-right text-gray-900">{sc.totalFreshBiomassTon.toLocaleString('en-US')}</td>
                 <td className="px-4 py-3 text-right text-blue-600">{formatKg(sc.totalPelletKg)}</td>
                 <td className="px-4 py-3 text-right text-emerald-700">{sc.cultivationCO2eTon.toFixed(2)}</td>
               </tr>
@@ -98,7 +98,7 @@ export default function ReportSummary({ periodKey }: ReportSummaryProps) {
       {/* Downstream KPI Cards */}
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <KpiCard icon={TrendingDown} accent="emerald" label="CO₂e Avoided" value={measuredTon.toFixed(2)} unit="Ton" sub={period.label} />
-        <KpiCard icon={Users} accent="violet" label="Active Partners" value={activePartners.length.toString()} unit="Farms" sub={`${totalCattle.toLocaleString()} cattle`} />
+        <KpiCard icon={Users} accent="violet" label="Active Partners" value={activePartners.length.toString()} unit="Farms" sub={`${totalCattle.toLocaleString('en-US')} cattle`} />
         <KpiCard icon={Award} accent="amber" label="Verified Credits" value={pipeline.verified.toString()} unit="Credits" sub="Issued to date" />
         <KpiCard icon={Clock} accent="amber-soft" label="Pending Audit" value={pipeline.pending.toString()} unit="Credits" sub="In verification" />
       </section>
@@ -175,7 +175,7 @@ export default function ReportSummary({ periodKey }: ReportSummaryProps) {
                 <tr key={p.id} className="hover:bg-gray-50/80">
                   <td className="px-4 py-3 font-semibold text-gray-900">{p.name}</td>
                   <td className="px-4 py-3 text-gray-500">{p.region}</td>
-                  <td className="px-4 py-3 text-right">{p.cattle.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-right">{p.cattle.toLocaleString('en-US')}</td>
                   <td className="px-4 py-3 text-right text-blue-600 font-semibold">{p.periodFeedTon}</td>
                   <td className="px-4 py-3 text-right text-emerald-600 font-bold">{p.periodCO2eTon}</td>
                   <td className="px-4 py-3">
@@ -234,7 +234,7 @@ export default function ReportSummary({ periodKey }: ReportSummaryProps) {
 function formatKg(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(2)}M`;
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`;
-  return n.toLocaleString();
+  return n.toLocaleString('en-US');
 }
 
 function stepColor(color: string): string {

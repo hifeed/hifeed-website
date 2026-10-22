@@ -1,9 +1,18 @@
 "use client";
-import React, { createContext, useContext, useMemo, useState } from 'react';
-import { dictionaries, type Locale, type Dictionary } from './dictionaries';
+import React, { createContext, useContext, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
+import type { Locale, Dictionary } from './dictionaries';
+import type { SiteMedia } from '../sanity/content';
+import { LOCALE_COOKIE } from './config';
+
+// Simpan pilihan bahasa agar middleware memakainya saat user membuka "/" lagi.
+export function rememberLocale(l: Locale) {
+  document.cookie = `${LOCALE_COOKIE}=${l}; path=/; max-age=31536000; samesite=lax`;
+}
 
 interface LocaleContextType {
   locale: Locale;
+  media: SiteMedia;
   t: (path: string) => unknown;
   setLocale: (l: Locale) => void;
 }
@@ -21,51 +30,30 @@ function get(obj: unknown, path: string): unknown {
   return acc;
 }
 
-export const LocaleProvider: React.FC<{ initialLocale: Locale; children: React.ReactNode }> = ({ initialLocale, children }) => {
-  const [locale, setLocale] = useState<Locale>(initialLocale);
+type LocaleProviderProps = {
+  initialLocale: Locale;
+  /** Konten (CMS digabung di atas dictionaries.ts) untuk bahasa ini, disiapkan di server. */
+  dictionary: Dictionary;
+  media: SiteMedia;
+  children: React.ReactNode;
+};
 
-  // Pada mount: gunakan preferensi yang tersimpan, jika tidak ada deteksi IP -> set default.
-  React.useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const saved = window.localStorage.getItem('locale') as Locale | null;
-    if (saved === 'en' || saved === 'id') {
-      if (saved !== locale) setLocale(saved);
-      document.documentElement.lang = saved;
-      document.cookie = `locale=${saved}; path=/; max-age=31536000`;
-      return;
-    }
-    (async () => {
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        const isID = data && data.country === 'ID';
-        const detected: Locale = isID ? 'id' : 'en';
-        window.localStorage.setItem('locale', detected);
-        document.cookie = `locale=${detected}; path=/; max-age=31536000`;
-        setLocale(detected);
-        document.documentElement.lang = detected;
-      } catch {
-        document.documentElement.lang = locale;
-      }
-    })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+export const LocaleProvider: React.FC<LocaleProviderProps> = ({ initialLocale, dictionary, media, children }) => {
+  // Bahasa ditentukan oleh URL (/en, /id); middleware yang mengarahkan pengunjung ke URL yang tepat.
+  const locale = initialLocale;
+  const router = useRouter();
 
   const value = useMemo(() => {
-    const dict: Dictionary = dictionaries[locale];
     return {
       locale,
-      t: (path: string) => get(dict, path),
+      media,
+      t: (path: string) => get(dictionary, path),
       setLocale: (l: Locale) => {
-        setLocale(l);
-        if (typeof window !== 'undefined') {
-          window.localStorage.setItem('locale', l);
-          document.documentElement.lang = l;
-          document.cookie = `locale=${l}; path=/; max-age=31536000`;
-        }
+        rememberLocale(l);
+        router.push(`/${l}`);
       },
     } as LocaleContextType;
-  }, [locale]);
+  }, [locale, dictionary, media, router]);
 
   return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 };
@@ -79,4 +67,8 @@ export function useLocale() {
 export function useTranslations(base?: string) {
   const { t } = useLocale();
   return (path: string) => t(base ? `${base}.${path}` : path);
+}
+
+export function useMedia() {
+  return useLocale().media;
 }

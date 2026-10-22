@@ -64,7 +64,7 @@ export default function FarmPartnersTable() {
                     {farm.region}
                   </div>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">{farm.cattle.toLocaleString()}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 text-right font-medium">{farm.cattle.toLocaleString('en-US')}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-600 text-right font-semibold">{farm.feed}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-emerald-600 text-right font-bold">{farm.co2e} Ton</td>
                 <td className="px-6 py-4 whitespace-nowrap">

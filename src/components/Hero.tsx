@@ -1,10 +1,10 @@
 "use client";
 import React from 'react';
-import { useTranslations } from "../i18n/LocaleProvider";
-import Image from 'next/image';
+import { useMedia, useTranslations } from "../i18n/LocaleProvider";
 
 const Hero: React.FC = () => {
     const t = useTranslations('hero');
+    const media = useMedia();
     const scrollToSection = (id: string) => {
         const section = document.getElementById(id);
         if (section) {
@@ -42,7 +42,8 @@ const Hero: React.FC = () => {
                             {/* Embed dari Google Drive dengan rasio 16:9 responsif */}
                             <div style={{ width: '100%', maxWidth: '700px', aspectRatio: '16/9', borderRadius: '1rem', overflow: 'hidden' }}>
                                 <iframe
-                                    src="https://drive.google.com/file/d/1nmRfmHQs2cvrIq-Kak-FEblI8zZc8JC1/preview"
+                                    src={media.heroVideoUrl}
+                                    title="HiFeed video"
                                     allow="autoplay; encrypted-media"
                                     allowFullScreen
                                     style={{ width: '100%', height: '100%', border: 0 }}

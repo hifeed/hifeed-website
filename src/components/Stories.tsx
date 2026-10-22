@@ -1,8 +1,11 @@
+"use client";
+
 import React from 'react';
-import { useTranslations } from "../i18n/LocaleProvider";
+import { useMedia, useTranslations } from "../i18n/LocaleProvider";
 
 const Stories: React.FC = () => {
     const t = useTranslations('stories');
+    const { storyImages } = useMedia();
     return (
         <section id="stories" className="py-20 bg-hifeed-gray">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -17,11 +20,11 @@ const Stories: React.FC = () => {
                     <div className="flex flex-col">
                         <div className="bg-hifeed-light p-4 flex items-center justify-center w-full">
                             <div className="grid grid-cols-4 gap-4 w-full max-w-5xl">
-                                {[1,2,3,4].map(i => (
-                                    <div key={i} className="rounded-2xl shadow-lg bg-white flex items-center justify-center aspect-[9/16] overflow-hidden">
+                                {storyImages.map((image, i) => (
+                                    <div key={`${i}-${image.src}`} className="rounded-2xl shadow-lg bg-white flex items-center justify-center aspect-[9/16] overflow-hidden">
                                         <img
-                                            src={`/stories_${i}.webp`}
-                                            alt={`Story ${i}`}
+                                            src={image.src}
+                                            alt={image.alt}
                                             className="w-full h-full object-cover"
                                             style={{ aspectRatio: '9/16' }}
                                         />

@@ -126,7 +126,14 @@ export interface ChallengesDict {
   card4Desc: string;
 }
 
+export interface MetaDict {
+  title: string;
+  description: string;
+  ogImageAlt: string;
+}
+
 export interface Dictionary {
+  meta: MetaDict;
   nav: NavDict;
   hero: HeroDict;
   benefits: BenefitsDict;
@@ -141,6 +148,11 @@ export interface Dictionary {
 
 export const dictionaries: Record<Locale, Dictionary> = {
   en: {
+    meta: {
+      title: 'HiFeed - Sustainable Cattle Farming Revolution',
+      description: "Transform your cattle operation with HiFeed's revolutionary complete feed pellets. Reduce emissions by 50%, cut costs by 30%, and lead the sustainable farming revolution.",
+      ogImageAlt: 'HiFeed - Sustainable Cattle Farming',
+    },
     nav: {
       challenges: 'Challenges',
       solution: 'Solution',
@@ -265,6 +277,11 @@ export const dictionaries: Record<Locale, Dictionary> = {
     },
   },
   id: {
+    meta: {
+      title: 'HiFeed - Revolusi Peternakan Sapi Berkelanjutan',
+      description: 'HiFeed adalah pelopor solusi peternakan sapi berkelanjutan, memungkinkan peternak meningkatkan performa pakan sekaligus mengurangi emisi karbon.',
+      ogImageAlt: 'HiFeed - Peternakan Sapi Berkelanjutan',
+    },
     nav: {
       challenges: 'Tantangan',
       solution: 'Solusi',

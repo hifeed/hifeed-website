@@ -1,15 +1,20 @@
 import type { MetadataRoute } from 'next'
+import { locales, siteUrl } from '../i18n/config'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://hifeed.co'
+// Setiap halaman publik ditulis sekali per bahasa, lengkap dengan alternates (hreflang).
+const pages = [{ path: '', changeFrequency: 'weekly' as const, priority: 1 }]
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const routes: MetadataRoute.Sitemap = [
-    {
-      url: `${siteUrl}/`,
+export default function sitemap(): MetadataRoute.Sitemap {
+  return pages.flatMap((page) => {
+    const languages = Object.fromEntries(
+      locales.map((l) => [l, `${siteUrl}/${l}${page.path}`]),
+    )
+    return locales.map((locale) => ({
+      url: `${siteUrl}/${locale}${page.path}`,
       lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-  ]
-  return routes
+      changeFrequency: page.changeFrequency,
+      priority: page.priority,
+      alternates: { languages },
+    }))
+  })
 }

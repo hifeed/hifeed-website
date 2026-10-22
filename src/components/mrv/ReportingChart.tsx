@@ -31,7 +31,7 @@ const CustomTooltipBar = ({ active, payload, label }: { active?: boolean; payloa
               <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
               <span className="text-xs text-gray-600">{entry.name}</span>
             </div>
-            <span className="text-xs font-bold text-gray-900">{entry.value.toLocaleString()} g</span>
+            <span className="text-xs font-bold text-gray-900">{entry.value.toLocaleString('en-US')} g</span>
           </div>
         ))}
       </div>
