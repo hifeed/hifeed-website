@@ -2,35 +2,35 @@
 
 import React from 'react';
 import { Download, Loader2 } from 'lucide-react';
-import type { PeriodKey } from '@/lib/mrv/periods';
+import { useCarbon } from '@/components/mrv/CarbonProvider';
+import type { ReportPeriod } from '@/lib/mrv/carbon';
 
-interface ExportReportButtonProps {
-  periodKey: PeriodKey;
-}
-
-export default function ExportReportButton({ periodKey }: ExportReportButtonProps) {
+export default function ExportReportButton({ period }: { period: ReportPeriod }) {
+  const carbon = useCarbon();
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
   async function handleDownload() {
     setLoading(true);
+    setError(false);
     try {
       const [{ pdf }, { createReportDocument }] = await Promise.all([
         import('@react-pdf/renderer'),
         import('./ReportPdfDocument'),
       ]);
-      const doc = createReportDocument(periodKey);
-      const instance = pdf(doc);
-      const blob = await instance.toBlob();
+      const doc = createReportDocument(carbon, period, `${window.location.origin}/hifeed_logo.png`);
+      const blob = await pdf(doc).toBlob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `HiFeed-MRV-Report-${periodKey}.pdf`;
+      a.download = `HiFeed-Carbon-Report-${period.key}.pdf`;
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Failed to generate report PDF', err);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ export default function ExportReportButton({ periodKey }: ExportReportButtonProp
       ) : (
         <>
           <Download className="w-4 h-4" />
-          Download MRV Report (PDF)
+          {error ? 'Failed — try again' : `Download PDF (${period.label})`}
         </>
       )}
     </button>

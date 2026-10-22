@@ -3,7 +3,6 @@
 import React from 'react';
 import { Coins } from 'lucide-react';
 import CarbonCycleVisual from '@/components/mrv/CarbonCycleVisual';
-import VerificationStatus from '@/components/mrv/VerificationStatus';
 import CreditPipeline from '@/components/mrv/CreditPipeline';
 import CarbonMethodology from '@/components/mrv/CarbonMethodology';
 
@@ -30,11 +29,6 @@ export default function CarbonPage() {
 
         {/* Credit Pipeline */}
         <CreditPipeline />
-
-        {/* Verification */}
-        <div className="max-w-2xl">
-          <VerificationStatus />
-        </div>
       </div>
     </>
   );

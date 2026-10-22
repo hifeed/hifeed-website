@@ -5,15 +5,13 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { formatMonthRange } from '@/lib/mrv/carbon';
 import { useCarbon } from '@/components/mrv/CarbonProvider';
-import { LayoutDashboard, Users, Coins, Settings, ChevronLeft, ChevronRight, Leaf, Menu, X, FileText } from 'lucide-react';
+import { LayoutDashboard, Coins, ChevronLeft, ChevronRight, Leaf, Menu, X, FileText } from 'lucide-react';
 
 
 const navItems = [
   { id: '/mrv', label: 'Dashboard', icon: LayoutDashboard, exact: true },
-  { id: '/mrv/partners', label: 'Farm Partners', icon: Users },
   { id: '/mrv/carbon', label: 'Carbon & Credits', icon: Coins },
   { id: '/mrv/report', label: 'Extract Report', icon: FileText },
-  { id: '/mrv/settings', label: 'Settings', icon: Settings },
 ];
 
 export default function Sidebar() {

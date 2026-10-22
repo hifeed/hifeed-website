@@ -270,8 +270,7 @@ export function computeCarbon(data: CarbonDataset) {
       })
     : [];
 
-  const totals = (upToMonth?: string) => {
-    const rows = upToMonth ? monthly.filter((r) => r.month <= upToMonth) : monthly;
+  const totalsFor = (rows: MonthlyAbatement[]) => {
     const entericT = rows.reduce((s, r) => s + r.enteric, 0);
     const rawMaterialT = rows.reduce((s, r) => s + r.rawMaterial, 0);
     const carbonBankT = rows.reduce((s, r) => s + r.carbonBank, 0);
@@ -286,6 +285,12 @@ export function computeCarbon(data: CarbonDataset) {
       toMonth: rows[rows.length - 1]?.month,
     };
   };
+  /** Total sampai bulan tertentu (inklusif); tanpa argumen = semua data. */
+  const totals = (upToMonth?: string) =>
+    totalsFor(upToMonth ? monthly.filter((r) => r.month <= upToMonth) : monthly);
+  /** Total untuk rentang bulan (inklusif). */
+  const totalsBetween = (fromMonth: string, toMonth: string) =>
+    totalsFor(monthly.filter((r) => r.month >= fromMonth && r.month <= toMonth));
 
   return {
     data,
@@ -305,8 +310,46 @@ export function computeCarbon(data: CarbonDataset) {
     ),
     monthly,
     totals,
+    totalsBetween,
   };
 }
 
 /** Model dari data workbook (fallback & verifikasi). */
 export const DEFAULT_CARBON = computeCarbon(DEFAULT_CARBON_DATA);
+
+// ─── Periode laporan ─────────────────────────────────────────────────────────
+
+export interface ReportPeriod {
+  key: string;
+  label: string;
+  fromMonth: string;
+  toMonth: string;
+}
+
+/** Periode laporan dari data riil: semua data, per tahun, dan per kuartal (terbaru dulu). */
+export function buildReportPeriods(model: CarbonModel): ReportPeriod[] {
+  const months = model.monthly.map((m) => m.month);
+  if (!months.length) return [];
+  const first = months[0];
+  const last = months[months.length - 1];
+  const clamp = (from: string, to: string) => ({
+    fromMonth: from < first ? first : from,
+    toMonth: to > last ? last : to,
+  });
+
+  const years = [...new Set(months.map((m) => m.slice(0, 4)))].sort().reverse();
+  const quarters = [...new Set(months.map((m) => `${m.slice(0, 4)}-Q${Math.ceil(Number(m.slice(5, 7)) / 3)}`))]
+    .sort()
+    .reverse();
+
+  return [
+    { key: 'all', label: 'All data', fromMonth: first, toMonth: last },
+    ...years.map((y) => ({ key: y, label: y, ...clamp(`${y}-01`, `${y}-12`) })),
+    ...quarters.map((q) => {
+      const [y, n] = q.split('-Q');
+      const startMonth = (Number(n) - 1) * 3 + 1;
+      const pad = (v: number) => String(v).padStart(2, '0');
+      return { key: q, label: `Q${n} ${y}`, ...clamp(`${y}-${pad(startMonth)}`, `${y}-${pad(startMonth + 2)}`) };
+    }),
+  ];
+}

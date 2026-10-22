@@ -84,6 +84,11 @@ Sumber konten landing page:
 
 ## 3. MRV — datanya dari mana?
 
+> **Update 2026-10-22 (production):** seluruh data dummy sudah dihapus (Farm Partners, peta, timeline verifikasi,
+> Settings, `data.ts`/`calc.ts`/`periods.ts`). `/mrv` kini hanya memakai data workbook carbon
+> (`src/lib/mrv/carbon.ts`, dapat diubah di Sanity → *Carbon accounting*): Dashboard, Carbon & Credits, dan
+> Carbon Abatement Report + PDF per periode (`src/lib/mrv/report.ts`). Penjelasan di bawah adalah kondisi sebelumnya.
+
 **Jawaban singkat: seluruh data MRV adalah data dummy/prototype yang ditulis tangan di `src/lib/mrv/data.ts`, sebagian lagi di-generate secara sintetis dari angka tersebut, dan beberapa angka di-hardcode langsung di komponen.** Tidak ada database, API, IoT, atau input dari lapangan. `report-meta.ts` sendiri menandai versi `prototype-v0.1` dan `"pre-generated, prototype"`.
 
 ### 3.1 Tiga lapisan sumber data

@@ -1,8 +1,8 @@
 import ReportPageClient from './ReportPageClient';
 
 export const metadata = {
-  title: 'Extract Report | HiFeed MRV',
-  description: 'Download a fully-detailed MRV report — methodology, formulas, calculations, results and audit trail — as a PDF for investor review.',
+  title: 'Carbon Abatement Report | HiFeed MRV',
+  description: 'Download HiFeed’s carbon abatement report — enteric fermentation reduction, raw material offtake and carbon bank sequestration — as a PDF.',
 };
 
 export default function ExtractReportPage() {
