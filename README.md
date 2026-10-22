@@ -41,19 +41,30 @@ Project ini sudah dikonfigurasi untuk deployment di Vercel. Langkah deployment:
 
 ```
 src/
-├── app/           # App router pages
-├── components/    # Reusable components
-public/           # Static assets
-components/       # Additional components
+├── app/
+│   ├── [locale]/      # Situs publik per bahasa: /en, /id
+│   ├── mrv/           # Dashboard MRV (prototype, noindex)
+│   ├── studio/        # Sanity Studio (CMS) di /studio
+│   ├── api/contact/   # Form konsultasi → Slack
+│   └── affiliate/     # Redirect link afiliasi
+├── components/        # Section landing page + mrv/
+├── i18n/              # config locale, dictionaries EN/ID, LocaleProvider
+├── lib/mrv/           # Data & kalkulasi MRV (carbon.ts = data riil workbook)
+├── sanity/            # Schema, client, getSiteContent()
+└── middleware.ts      # Redirect "/" → /en atau /id
+public/                # Static assets
+docs/architecture/     # Overview & ADR
 ```
+
+Bahasa ditentukan oleh URL. Pengunjung yang membuka `/` diarahkan (307) ke `/id` atau `/en` berdasarkan cookie `locale` → negara (`x-vercel-ip-country`) → `Accept-Language` → default `en`.
+
+## 📝 CMS
+
+Konten, gambar, dan SEO landing page dikelola di Sanity Studio (`/studio`). Setup & cara pakai: [docs/cms-sanity.md](docs/cms-sanity.md).
 
 ## 🔧 Environment Variables
 
-Buat file `.env.local` untuk environment variables jika diperlukan:
-
-```env
-# Add your environment variables here
-```
+Salin `.env.example` ke `.env.local` lalu isi nilainya.
 
 ## 📱 Features
 
